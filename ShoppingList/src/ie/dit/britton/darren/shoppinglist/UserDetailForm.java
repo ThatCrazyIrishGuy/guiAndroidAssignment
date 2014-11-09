@@ -92,25 +92,68 @@ public class UserDetailForm extends ActionBarActivity {
     private boolean setUserDetails()
     {
         User user = User.getInstance();
-        user.setName(name.getText().toString());
         
-        int selectedID = gender.getCheckedRadioButtonId();
-        RadioButton selectedGender = (RadioButton) findViewById(selectedID);
-        user.setGender(selectedGender.getText().toString());
+        if (name.getText().length() != 0)
+        {
+        	Log.i("info","Name: " +name.getText().toString());
+            user.setName(name.getText().toString());
+        }
+        else
+        {
+        	return false;
+        }
+        
+        try
+        {
+            int selectedID = gender.getCheckedRadioButtonId();
+            RadioButton selectedGender = (RadioButton) findViewById(selectedID);
+            user.setGender(selectedGender.getText().toString());
+        }
+        catch(Exception e)
+        {
+        	return false;
+        }
         
         user.setJob(job.getSelectedItem().toString());
-        user.setAge(Short.parseShort(age.getText().toString()));
-        user.setMoney(Double.parseDouble(job.getSelectedItem().toString()));
-        user.setEmail(email.getText().toString());
         
-        Log.i("info","Name: " +user.getName());
-        Log.i("info","Gender: " +user.getGender());
-        Log.i("info","Job: " +user.getJob());
-        Log.i("info","Age: " +user.getAge());
-        Log.i("info","Money: " +user.getMoney());
-        Log.i("info","Email: " +user.getEmail());
+        if(age.getText().length() != 0)
+        {
+        	Log.i("info","Age: " +Short.parseShort(age.getText().toString()));
+            user.setAge(Short.parseShort(age.getText().toString()));
+        }
+        else
+        {
+        	return false;
+        }
+        
+        if(money.getText().length() != 0)
+        {
+        	Log.i("info","Money: " +Double.parseDouble(money.getText().toString()));
+            user.setMoney(Double.parseDouble(money.getText().toString()));
+        }
+        else
+        {
+        	return false;
+        }
+        
+        if (email.getText().length() != 0)
+        {
+        	Log.i("info","Email: " +email.getText().toString());
+            user.setEmail(email.getText().toString());
+        }
+        else
+        {
+        	return false;
+        }
+        
+//        Log.i("info","Name: " +user.getName());
+//        Log.i("info","Gender: " +user.getGender());
+//        Log.i("info","Job: " +user.getJob());
+//        Log.i("info","Age: " +user.getAge());
+//        Log.i("info","Money: " +user.getMoney());
+//        Log.i("info","Email: " +user.getEmail());
 
-    	return false;
+    	return true;
         
     }
     
