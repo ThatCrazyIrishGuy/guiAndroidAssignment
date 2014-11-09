@@ -1,0 +1,96 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="ie.dit.britton.darren.shoppinglist.UserDetailForm" >
+    
+    <EditText
+        android:id="@+id/name"
+        android:hint="Name"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+ 		android:padding="30dp"
+     />
+    
+     <TextView
+        android:id="@+id/genderLabel"
+        android:layout_below="@+id/name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Gender"
+        android:padding="10dp"
+     />
+    
+   	<RadioGroup 
+   	    android:id="@+id/gender"
+  	    android:layout_below="@+id/genderLabel"
+		android:orientation="horizontal"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:padding="20dp" >
+		<RadioButton
+			android:id="@+id/male"
+			android:text="Male"
+		/>
+		<RadioButton
+			android:id="@+id/female"
+			android:text="Female"
+		/>
+		<RadioButton
+			android:id="@+id/other"
+			android:text="Other"
+		/>
+	</RadioGroup>
+	
+	<Spinner
+    	android:id="@+id/job"
+    	android:layout_below="@+id/gender"
+    	android:layout_width="fill_parent"
+    	android:layout_height="wrap_content"
+ 		android:padding="20dp"
+    />
+	
+    <EditText
+        android:id="@+id/age"
+        android:hint="Age"
+        android:layout_below="@+id/job"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:inputType="number" 
+        android:padding="30dp"
+    />
+
+   <EditText
+        android:id="@+id/money"
+        android:hint="Amount Available to Spend"
+        android:layout_below="@+id/age"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:inputType="numberDecimal"
+        android:padding="30dp"
+    />
+
+    <EditText
+        android:id="@+id/email"
+        android:hint="Email"
+        android:layout_below="@+id/money"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textEmailAddress"
+        android:padding="30dp"
+     />
+    
+     <Button
+        android:layout_below="@+id/email"
+        android:id="@+id/submit"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text ="Submit"
+        android:padding="20dp"
+     />
+
+</RelativeLayout>
