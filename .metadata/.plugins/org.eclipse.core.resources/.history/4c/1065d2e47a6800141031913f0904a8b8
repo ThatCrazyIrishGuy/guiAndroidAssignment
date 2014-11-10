@@ -17,8 +17,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 
-public class UserDetailForm extends ActionBarActivity 
-{
+public class UserDetailForm extends ActionBarActivity {
 
 	Button submit;
 	EditText name;
@@ -29,8 +28,7 @@ public class UserDetailForm extends ActionBarActivity
 	EditText email;
 	
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_detail_form);
         
@@ -73,8 +71,7 @@ public class UserDetailForm extends ActionBarActivity
 
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu)
-    {
+    public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.user_detail_form, menu);
         return true;

@@ -56,11 +56,8 @@ public class ShoppingListView extends ListActivity {
 		        TextView name = (TextView) rowView.findViewById(textViewResourceId);
 		        name.setText(values[position]);
 		        TextView price = (TextView) rowView.findViewById(priceResourceId);
-		        Double randPrice = r.nextDouble() * 10;
-		        randPrice *= 100;
-		        randPrice = (double) Math.round(randPrice);
-		        final Double finalPrice = randPrice / 100;
-		        price.setText("€" + finalPrice.toString());
+		        final Double randPrice = r.nextDouble() * 10;
+		        price.setText("€" + randPrice.toString().substring(0, 4));
 		        Button plus = (Button) rowView.findViewById(plusResourceId);
 		        Button minus = (Button) rowView.findViewById(minusResourceId);
 		        final EditText quantity = (EditText) rowView.findViewById(quantityResourceId);
@@ -91,7 +88,7 @@ public class ShoppingListView extends ListActivity {
 	               		}
 	               		else
 	               		{
-	               			item.setPrice(finalPrice);
+	               			item.setPrice(randPrice);
 	               			item.setQuantity(1);
 	               			basket.addItem(item);	
 	               		}
@@ -128,7 +125,7 @@ public class ShoppingListView extends ListActivity {
 	               		}
 	               		else
 	               		{
-	               			item.setPrice(finalPrice);
+	               			item.setPrice(randPrice);
 	               			item.setQuantity(itemQuantity);
 	               			basket.addItem(item);	
 	               		}

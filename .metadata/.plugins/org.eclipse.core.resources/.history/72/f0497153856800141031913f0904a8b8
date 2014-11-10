@@ -60,7 +60,7 @@ public class ShoppingListView extends ListActivity {
 		        randPrice *= 100;
 		        randPrice = (double) Math.round(randPrice);
 		        final Double finalPrice = randPrice / 100;
-		        price.setText("€" + finalPrice.toString());
+		        price.setText("€" + finalPrice.toString().substring(0, 4));
 		        Button plus = (Button) rowView.findViewById(plusResourceId);
 		        Button minus = (Button) rowView.findViewById(minusResourceId);
 		        final EditText quantity = (EditText) rowView.findViewById(quantityResourceId);
