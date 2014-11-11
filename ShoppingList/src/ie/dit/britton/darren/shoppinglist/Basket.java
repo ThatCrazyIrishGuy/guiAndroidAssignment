@@ -27,19 +27,18 @@ public class Basket
 	public void addItem(OrderLine item) 
 	{
 		
-		items.add(item);
 	}
 	
-	public boolean findItem(String itemName)
+	public OrderLine findItem(Item item)
 	{
 		for (OrderLine i : items)
 		{
-			if (i.equals(itemName))
+			if (i.equals(item.getName()))
 			{
-				return true;
+				return i;
 			}
 		}
-		return false;
+		return new OrderLine(item.getName(),item.getPrice(),-1);
 	}
 
 	public Double getTotal()

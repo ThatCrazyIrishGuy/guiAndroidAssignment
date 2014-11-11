@@ -34,6 +34,17 @@ public class UserDetailForm extends ActionBarActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_detail_form);
         
+        Thread thread = new Thread()
+        {
+            @Override
+            public void run() {
+                Store store = Store.getInstance();
+				store.populate(getResources().getStringArray(R.array.items));
+            }
+        };
+        
+        thread.run();
+        
         int spinnerID =R.id.job;
         
         Spinner spinner = (Spinner) findViewById(spinnerID);

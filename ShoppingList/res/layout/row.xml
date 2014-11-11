@@ -28,12 +28,12 @@
 	    android:layout_alignParentRight="true"
 	     />
 	
-	<EditText
+	<TextView
 	    android:id="@+id/quantity"
+	    android:gravity="center"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:hint="@string/zero"
-		android:inputType="number" 
+		android:text="@string/zero"
 		android:layout_toLeftOf="@+id/plus" />
 	
 	<Button

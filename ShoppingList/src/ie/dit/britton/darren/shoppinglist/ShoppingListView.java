@@ -1,11 +1,8 @@
 package ie.dit.britton.darren.shoppinglist;
 
-import java.util.Random;
-
 import android.annotation.SuppressLint;
 import android.app.ListActivity;
 import android.content.Context;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,14 +10,13 @@ import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class ShoppingListView extends ListActivity {
+public class ShoppingListView extends ListActivity
+{
 	
 	private Basket basket = Basket.getInstance();
-	private Random r = new Random();
 	
 	@SuppressLint("ViewHolder")
 	public class ShoppingListAdapter  extends ArrayAdapter<String>
@@ -52,18 +48,20 @@ public class ShoppingListView extends ListActivity {
 
 		@SuppressLint({ "ViewHolder", "InflateParams" })
 		@Override
-		public View getView(final int position,  View view, ViewGroup parent) {
+		public View getView(final int position,  View view, ViewGroup parent)
+		{
 		    
 			LayoutInflater inflater=getLayoutInflater();
 			inflater =(LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		        View rowView = inflater.inflate(R.layout.row, parent, false);
+		        final Item item = store.getItem(position);
 		        TextView name = (TextView) rowView.findViewById(textViewResourceId);
 		        name.setText(values[position]);
 		        TextView price = (TextView) rowView.findViewById(priceResourceId);
-		        price.setText("€" + store.getItem(position).getPrice());
+		        price.setText("€" + item.getPrice());
 		        Button plus = (Button) rowView.findViewById(plusResourceId);
 		        Button minus = (Button) rowView.findViewById(minusResourceId);
-		        final EditText quantity = (EditText) rowView.findViewById(quantityResourceId);
+		        final TextView quantity = (TextView) rowView.findViewById(quantityResourceId);
 		        
 				plus.setOnClickListener(
 	               new OnClickListener()
@@ -71,30 +69,18 @@ public class ShoppingListView extends ListActivity {
 	               	@Override
 	                   public void onClick(View view)
 	                   {
-	               		
-	               		int itemQuantity = 0;
-	               		String stringQuantity = quantity.getText().toString();
-	               		
-	               		if (stringQuantity.length() != 0)
+	               		OrderLine orderline = basket.findItem(item);
+	               			               		
+	               		if (orderline.getQuantity() == -1)
 	               		{
-		               		  itemQuantity = Integer.parseInt(quantity.getText().toString());
-	               		}
-	               		
-	               		itemQuantity++;
-	               		quantity.setText(String.valueOf(itemQuantity));
-	               		
-	               		Item item = basket.findItem(values[position]);
-	               		
-	               		if(item.getPrice() != -1.0)
-	               		{
-	               			item.setQuantity(itemQuantity);
+		               		orderline.setQuantity(orderline.getQuantity() + 2);
+		               		basket.addItem(orderline);
 	               		}
 	               		else
 	               		{
-	               			item.setPrice(finalPrice);
-	               			item.setQuantity(1);
-	               			basket.addItem(item);	
+		               		orderline.setQuantity(orderline.getQuantity() + 1);
 	               		}
+	               		quantity.setText(String.valueOf(orderline.getQuantity()));
 	               		
 	               		ShowUpdatedTotal();
 	                   }
@@ -106,36 +92,17 @@ public class ShoppingListView extends ListActivity {
 	               	@Override
 	                   public void onClick(View view)
 	                   {
-	               		int itemQuantity = 0;
-	               		String stringQuantity = quantity.getText().toString();
-	               		
-	               		if (stringQuantity.length() != 0)
+	               		OrderLine orderline = basket.findItem(item);
+		               		
+	               		if (orderline.getQuantity() > 0)
 	               		{
-	               			System.out.println("StringQuantity: "+stringQuantity);
-	               			itemQuantity = Integer.parseInt(quantity.getText().toString());
-	               			if (itemQuantity > 0)
-	               			{
-		               			itemQuantity--;
-	               			}
-	               		}
-	               		quantity.setText(String.valueOf(itemQuantity));
-	               		
-	               		Item item = basket.findItem(values[position]);
-	               		
-	               		if(item.getPrice() != -1.0)
-	               		{
-	               			item.setQuantity(itemQuantity);
-	               		}
-	               		else
-	               		{
-	               			item.setPrice(finalPrice);
-	               			item.setQuantity(itemQuantity);
-	               			basket.addItem(item);	
-	               		}
-	               		
+		               		orderline.setQuantity(orderline.getQuantity() - 1);
+		               		quantity.setText(String.valueOf(orderline.getQuantity()));
+	               		}	               		
 	               		ShowUpdatedTotal();
 	                   }
-	               });
+	               }
+				);
 		        
 		        return rowView;
 		}

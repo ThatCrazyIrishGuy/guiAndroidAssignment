@@ -48,13 +48,13 @@ public class Store
 		Random r = new Random();
 		
         Double randPrice = 0.0;
-        randPrice = r.nextDouble() * 10;
-        randPrice *= 100;
-        randPrice = (double) Math.round(randPrice);
-        randPrice /= 100;
 		
 		for(String name : names)
 		{
+	        randPrice = r.nextDouble() * 10;
+	        randPrice *= 100;
+	        randPrice = (double) Math.round(randPrice);
+	        randPrice /= 100;
 			items.add(new Item(name,randPrice));
 		}
 	}
