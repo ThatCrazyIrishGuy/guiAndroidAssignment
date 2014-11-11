@@ -24,11 +24,6 @@ public class Store
 	{
 		 items = new ArrayList<Item>();
 	}
-	
-	public Item getItem(int i)
-	{
-		return items.get(i);
-	}
 
 	public String[] getItemNames()
 	{
