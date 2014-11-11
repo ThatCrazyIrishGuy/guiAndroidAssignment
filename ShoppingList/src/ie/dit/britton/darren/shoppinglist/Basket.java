@@ -17,37 +17,36 @@ public class Basket
 		return instance;
 	}
 	
-	private List<Item> items;
+	private List<OrderLine> items;
 	
 	public Basket()
 	{
-		 items = new ArrayList<Item>();
+		 items = new ArrayList<OrderLine>();
 	}
 
-	public void addItem(Item item) 
+	public void addItem(OrderLine item) 
 	{
 		
 		items.add(item);
 	}
 	
-	public Item findItem(String itemName)
+	public boolean findItem(String itemName)
 	{
-		for (Item i : items)
+		for (OrderLine i : items)
 		{
 			if (i.equals(itemName))
 			{
-				return i;
+				return true;
 			}
 		}
-		Item item = new Item(itemName,-1.0,0);
-		return item;
+		return false;
 	}
 
 	public Double getTotal()
 	{
 		Double total = 0.0;
 		
-		for (Item i : items)
+		for (OrderLine i : items)
 		{
 			total += i.getPrice() * i.getQuantity();
 		}

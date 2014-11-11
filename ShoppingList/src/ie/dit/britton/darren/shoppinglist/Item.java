@@ -7,15 +7,14 @@ public class Item
 	
 	private String name;
 	private Double price;
-	private int quantity;
+
 	
-	public Item (String name, Double price, int quantity)
+	public Item (String name, Double price)
 	{
 		this.name = name;
 		this.price = price;
-		this.quantity = quantity;
 	}
-	
+
 	public Double getVat()
 	{
 		Double vat;
@@ -47,12 +46,5 @@ public class Item
 	{
 		this.price = price;
 	}
-	public int getQuantity()
-	{
-		return quantity;
-	}
-	public void setQuantity(int itemQuantity)
-	{
-		this.quantity = itemQuantity;
-	}
+
 }

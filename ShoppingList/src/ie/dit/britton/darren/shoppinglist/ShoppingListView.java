@@ -26,6 +26,7 @@ public class ShoppingListView extends ListActivity {
 	public class ShoppingListAdapter  extends ArrayAdapter<String>
 	{
 		Context context;
+		Store store;
 		String[] values;
 		int textViewResourceId;
 		int priceResourceId;
@@ -37,6 +38,9 @@ public class ShoppingListView extends ListActivity {
 				int priceResourceId, int plusResourceId, int minusResourceId, int quantityResourceId,String[] values)
 		{
 			super(context,resource,textViewResourceId,values);
+			
+			store = Store.getInstance();
+			
 			this.textViewResourceId = textViewResourceId;
 			this.priceResourceId = priceResourceId;
 			this.plusResourceId = plusResourceId;
@@ -56,11 +60,7 @@ public class ShoppingListView extends ListActivity {
 		        TextView name = (TextView) rowView.findViewById(textViewResourceId);
 		        name.setText(values[position]);
 		        TextView price = (TextView) rowView.findViewById(priceResourceId);
-		        Double randPrice = r.nextDouble() * 10;
-		        randPrice *= 100;
-		        randPrice = (double) Math.round(randPrice);
-		        final Double finalPrice = randPrice / 100;
-		        price.setText("€" + finalPrice.toString());
+		        price.setText("€" + store.getItem(position).getPrice());
 		        Button plus = (Button) rowView.findViewById(plusResourceId);
 		        Button minus = (Button) rowView.findViewById(minusResourceId);
 		        final EditText quantity = (EditText) rowView.findViewById(quantityResourceId);
@@ -146,8 +146,8 @@ public class ShoppingListView extends ListActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.shopping_list_view);
-        Resources res = getResources();
-        setListAdapter(new ShoppingListAdapter(this,R.layout.row,R.id.item,R.id.price,R.id.plus,R.id.minus,R.id.quantity,res.getStringArray(R.array.items)));
+        Store store = Store.getInstance();
+        setListAdapter(new ShoppingListAdapter(this,R.layout.row,R.id.item,R.id.price,R.id.plus,R.id.minus,R.id.quantity,store.getItemNames()));
     }
     
     protected void ShowUpdatedTotal()
