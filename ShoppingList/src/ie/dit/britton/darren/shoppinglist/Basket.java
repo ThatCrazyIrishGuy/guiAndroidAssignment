@@ -26,14 +26,26 @@ public class Basket
 
 	public void addItem(OrderLine item) 
 	{
-		
+		items.add(item);
+	}
+	
+	public boolean contains(Item item)
+	{
+		for (OrderLine i : items)
+		{
+			if (i.getName() == item.getName())
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	public OrderLine findItem(Item item)
 	{
 		for (OrderLine i : items)
 		{
-			if (i.equals(item.getName()))
+			if (i.getName() == item.getName())
 			{
 				return i;
 			}

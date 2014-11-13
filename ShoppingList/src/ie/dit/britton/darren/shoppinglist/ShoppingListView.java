@@ -50,61 +50,73 @@ public class ShoppingListView extends ListActivity
 		@Override
 		public View getView(final int position,  View view, ViewGroup parent)
 		{
+		    if (view == null)
+		    {
+				LayoutInflater inflater=getLayoutInflater();
+				inflater =(LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		        view = inflater.inflate(R.layout.row, parent, false);
+		        
+		    }
 		    
-			LayoutInflater inflater=getLayoutInflater();
-			inflater =(LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		        View rowView = inflater.inflate(R.layout.row, parent, false);
-		        final Item item = store.getItem(position);
-		        TextView name = (TextView) rowView.findViewById(textViewResourceId);
-		        name.setText(values[position]);
-		        TextView price = (TextView) rowView.findViewById(priceResourceId);
-		        price.setText("€" + item.getPrice());
-		        Button plus = (Button) rowView.findViewById(plusResourceId);
-		        Button minus = (Button) rowView.findViewById(minusResourceId);
-		        final TextView quantity = (TextView) rowView.findViewById(quantityResourceId);
-		        
-				plus.setOnClickListener(
-	               new OnClickListener()
-	               {
-	               	@Override
-	                   public void onClick(View view)
-	                   {
-	               		OrderLine orderline = basket.findItem(item);
-	               			               		
-	               		if (orderline.getQuantity() == -1)
-	               		{
-		               		orderline.setQuantity(orderline.getQuantity() + 2);
-		               		basket.addItem(orderline);
-	               		}
-	               		else
-	               		{
-		               		orderline.setQuantity(orderline.getQuantity() + 1);
-	               		}
-	               		quantity.setText(String.valueOf(orderline.getQuantity()));
+	        final Item item = store.getItem(position);
+	        TextView name = (TextView) view.findViewById(textViewResourceId);
+	        name.setText(item.getName());
+	        TextView price = (TextView) view.findViewById(priceResourceId);
+	        price.setText("€" + item.getPrice());
+	        Button plus = (Button) view.findViewById(plusResourceId);
+	        Button minus = (Button) view.findViewById(minusResourceId);
+	        final TextView quantity = (TextView) view.findViewById(quantityResourceId);
+	        if (basket.contains(item))
+	        {
+	        	quantity.setText(String.valueOf(basket.findItem(item).getQuantity()));
+	        }
+	        else
+	        {
+	        	quantity.setText("0");
+	        }
+	        
+			plus.setOnClickListener(
+               new OnClickListener()
+               {
+               	@Override
+                   public void onClick(View view)
+                   {
+               		OrderLine orderline = basket.findItem(item);
+               			               		
+               		if (orderline.getQuantity() == -1.0)
+               		{
+	               		orderline.setQuantity(orderline.getQuantity() + 2);
+	               		basket.addItem(orderline);
+               		}
+               		else
+               		{
+	               		orderline.setQuantity(orderline.getQuantity() + 1);
+               		}
+               		quantity.setText(String.valueOf(orderline.getQuantity()));
+               		
+               		ShowUpdatedTotal();
+                   }
+               });
+			
+			minus.setOnClickListener(
+               new OnClickListener()
+               {
+               	@Override
+                   public void onClick(View view)
+                   {
+               		OrderLine orderline = basket.findItem(item);
 	               		
+               		if (orderline.getQuantity() > 0)
+               		{
+	               		orderline.setQuantity(orderline.getQuantity() - 1);
+	               		quantity.setText(String.valueOf(orderline.getQuantity()));
 	               		ShowUpdatedTotal();
-	                   }
-	               });
-				
-				minus.setOnClickListener(
-	               new OnClickListener()
-	               {
-	               	@Override
-	                   public void onClick(View view)
-	                   {
-	               		OrderLine orderline = basket.findItem(item);
-		               		
-	               		if (orderline.getQuantity() > 0)
-	               		{
-		               		orderline.setQuantity(orderline.getQuantity() - 1);
-		               		quantity.setText(String.valueOf(orderline.getQuantity()));
-	               		}	               		
-	               		ShowUpdatedTotal();
-	                   }
-	               }
-				);
+               		}	               		
+                   }
+               }
+			);
 		        
-		        return rowView;
+	        return view;
 		}
 
 	}

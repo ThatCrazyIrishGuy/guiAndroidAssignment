@@ -96,11 +96,16 @@ public class UserDetailForm extends ActionBarActivity
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
+    	  switch (item.getItemId()) {
+    	    case R.id.action_load_demo_values:
+    	        MakeToast("Uh this was hard so i didn't do it");
+    	        return true;
+    	    case R.id.action_settings:
+    	        // Settings option clicked.
+    	        return true;
+    	    default:
+    	        return super.onOptionsItemSelected(item);
+    	    }
     }
     
     private boolean setUserDetails()
@@ -175,5 +180,10 @@ public class UserDetailForm extends ActionBarActivity
     {
 		Intent intent = new Intent(UserDetailForm.this,ShoppingListView.class);
 		startActivity(intent);
+    }
+    
+    public void MakeToast(String message)
+    {    	
+    	Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
     }
 }

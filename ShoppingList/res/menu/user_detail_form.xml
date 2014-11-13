@@ -4,9 +4,15 @@
     tools:context="ie.dit.britton.darren.shoppinglist.UserDetailForm" >
 
     <item
+        android:id="@+id/action_load_demo_values"
+        android:orderInCategory="2"
+        android:title="@string/action_settings"
+        app:showAsAction="never"/>
+    
+    <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
-        android:title="@string/action_settings"
+        android:title="@string/loadDemoValues"
         app:showAsAction="never"/>
 
 </menu>

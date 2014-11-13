@@ -19,15 +19,23 @@ public class Store
 	}
 	
 	private List<Item> items;
+	private int count;
 	
 	public Store()
 	{
 		 items = new ArrayList<Item>();
+		 count = -1;
 	}
 	
 	public Item getItem(int i)
 	{
 		return items.get(i);
+	}
+	
+	public Item getNextItem()
+	{
+		count++;
+		return items.get(count);
 	}
 
 	public String[] getItemNames()
@@ -57,6 +65,7 @@ public class Store
 	        randPrice /= 100;
 			items.add(new Item(name,randPrice));
 		}
+		
 	}
 	
 	public Item findItem(String itemName)
