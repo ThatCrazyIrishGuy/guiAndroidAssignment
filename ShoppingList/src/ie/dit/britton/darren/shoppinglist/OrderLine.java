@@ -17,4 +17,15 @@ public class OrderLine extends Item{
 	{
 		this.quantity = itemQuantity;
 	}
+	public double getTotal()
+	{
+		Double total = getPrice() * getQuantity();
+		total *= 100;
+		total = (double) Math.round(total);
+		total /= 100;
+		
+		return total;
+	}
+	
+	
 }

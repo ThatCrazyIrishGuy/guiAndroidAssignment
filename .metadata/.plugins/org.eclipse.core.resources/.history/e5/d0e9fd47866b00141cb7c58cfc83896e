@@ -1,0 +1,36 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent" android:layout_height="fill_parent">
+   	<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="5dp" >
+		<TableLayout
+		    android:id="@+id/purchases"
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+			android:stretchColumns="*"
+		    tools:ignore="UselessParent"
+		    android:padding="5dp">
+		    <TableRow android:id="@+id/header">
+		        <TextView
+		            android:text="Name" />
+		        <TextView
+		            android:text="Quantity" />
+		 	        <TextView
+		            android:text="VAT" />
+		       	<TextView
+		            android:text="Price" />
+		       	<TextView
+		            android:text="Total" />
+		    </TableRow>
+		</TableLayout>
+		<Button
+        android:layout_below="@+id/purchases"
+        android:id="@+id/checkout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text ="@string/checkout"  />
+		</Button>
+	</RelativeLayout>
+</ScrollView>

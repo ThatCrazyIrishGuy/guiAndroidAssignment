@@ -183,7 +183,7 @@ public class UserDetailForm extends ActionBarActivity
     }
     
     public void MakeToast(String message)
-    {    	
+    {
     	Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
     }
 }

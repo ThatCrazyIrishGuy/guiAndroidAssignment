@@ -1,0 +1,115 @@
+package ie.dit.britton.darren.shoppinglist;
+
+import java.text.NumberFormat;
+import java.util.Locale;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.Spinner;
+import android.widget.TableLayout;
+import android.widget.TableRow;
+import android.widget.TextView;
+import android.widget.Toast;
+
+
+public class CheckoutView extends ActionBarActivity 
+{
+
+	Basket basket;
+	Button submit;
+	TableLayout purchasesTable;
+	TableRow purchase;
+	NumberFormat currency;
+	
+    @Override
+    protected void onCreate(Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.checkout_view);
+        
+        currency = NumberFormat.getCurrencyInstance(Locale.ITALY);
+        
+        basket = Basket.getInstance();
+        purchasesTable = (TableLayout) findViewById(R.id.purchases);
+        
+        OrderLine[] purchases = basket.getPurchases();
+        
+        for(OrderLine p : purchases)
+        {
+        	if(p.getQuantity() > 0)
+        	{
+            	purchase = new TableRow(this);
+            	purchase.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
+            	/* Create a Button to be the row-content. */
+            	TextView name = new TextView(this);
+            	TextView quantity = new TextView(this);
+            	TextView VAT = new TextView(this);
+            	TextView price = new TextView(this);
+            	TextView total = new TextView(this);
+            	name.setText(p.getName());
+            	name.setText(p.getQuantity());
+            	name.setText(currency.format(p.getVat()));
+            	name.setText(currency.format(p.getPrice()));
+            	name.setText(currency.format(p.getTotal()));
+            	b.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
+            	/* Add Button to row. */
+            	purchase.addView(b);
+            	/* Add row to TableLayout. */
+            	//tr.setBackgroundResource(R.drawable.sf_gradient_03);
+            	purchasesTable.addView(purchase, new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT));
+        	}
+        }
+        
+        
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.user_detail_form, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+    	  switch (item.getItemId()) {
+    	    case R.id.action_load_demo_values:
+    	        MakeToast("Uh this was hard so i didn't do it");
+    	        return true;
+    	    case R.id.action_settings:
+    	        // Settings option clicked.
+    	        return true;
+    	    default:
+    	        return super.onOptionsItemSelected(item);
+    	    }
+    }
+    
+
+    
+    private void finishTransaction()
+    {
+		Intent intent = new Intent(CheckoutView.this,ShoppingListView.class);
+		startActivity(intent);
+    }
+    
+    public void MakeToast(String message)
+    {
+    	Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+    }
+}

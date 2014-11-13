@@ -16,6 +16,9 @@
     <string name="minus">-</string>
     <string name="zero">0</string>
     <string name="loadDemoValues">Load Demo Values</string>
+    <string name="viewCart">View Cart</string>
+    <string name="checkout">Checkout</string>
+    <string name="modifyCart">Modify Cart</string>
     
     <string-array name="jobTitles">
 	    <item>Abattoir Worker</item>

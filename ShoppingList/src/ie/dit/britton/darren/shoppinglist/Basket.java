@@ -18,10 +18,19 @@ public class Basket
 	}
 	
 	private List<OrderLine> items;
+	private User user;
+	
 	
 	public Basket()
 	{
-		 items = new ArrayList<OrderLine>();
+		user = User.getInstance();
+		items = new ArrayList<OrderLine>();
+	}
+	
+	public OrderLine[] getPurchases()
+	{
+		OrderLine[] temp = new OrderLine[items.size()];
+		return items.toArray(temp);
 	}
 
 	public void addItem(OrderLine item) 
@@ -67,6 +76,11 @@ public class Basket
 		total /= 100;
 		
 		return total;
+	}
+	
+	public Double getRemainingBudget()
+	{
+		return user.getMoney() - getTotal();
 	}
 	
 }

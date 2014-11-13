@@ -1,0 +1,23 @@
+	<TableLayout
+	    android:id="@+id/purchases"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:stretchColumns="1">
+	    <TableRow android:id="@+id/header">
+	        <TextView
+	            android:text="Name"
+	            android:padding="1dp" />
+	        <TextView
+	            android:text="Quantity"
+	            android:padding="1dp" />
+  	        <TextView
+	            android:text="VAT"
+	            android:padding="1dp" />
+        	<TextView
+	            android:text="Price"
+	            android:padding="1dp" />
+        	<TextView
+	            android:text="Total"
+	            android:padding="1dp" />
+	    </TableRow>
+	</TableLayout>
