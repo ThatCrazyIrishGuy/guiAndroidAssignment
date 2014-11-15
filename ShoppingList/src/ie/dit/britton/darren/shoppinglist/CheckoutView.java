@@ -1,13 +1,19 @@
 package ie.dit.britton.darren.shoppinglist;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -31,6 +37,7 @@ public class CheckoutView extends ActionBarActivity
 	NumberFormat currency;
 	Toast toast;
 	String mailBody;
+	String filePath;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -49,7 +56,27 @@ public class CheckoutView extends ActionBarActivity
 	            }
 	        });
         
+        try 
+        {   
+
+        	File dir = new File (Environment.getExternalStorageDirectory() + "/ie_dit_britton_darren_shoppinglist/lists/");
+        	dir.mkdirs();
+        	File file = new File(dir, "shoppinglist.html");
+
+        	FileOutputStream fOut = new FileOutputStream(file, false);
+            OutputStreamWriter osw = new OutputStreamWriter(fOut); 
+            osw.write(mailBody);
+            osw.flush();
+            osw.close();
+        }
+        catch (Exception e)
+        {
+        	e.printStackTrace();
+        }
+
+        
         final Calendar calendar = Calendar.getInstance();
+        final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/mm/yyyy", Locale.UK);
                 
         checkout =(Button)findViewById(R.id.checkout);
         checkout.setOnClickListener(
@@ -61,32 +88,48 @@ public class CheckoutView extends ActionBarActivity
 	        		
         		   class SendEmail extends AsyncTask<Void, Void, Void>
         		   {
-	    		        @Override
+						@Override
 	    		        protected Void doInBackground(Void... params) {
-	    		        	 try {   
-	    		                    GMailSender sender = new GMailSender("shoppinglistify@gmail.com",
-	    		                    		"01189998819991197253");
-	    		                    sender.sendMail("Your Personalised Shopping List for" + calendar.getTime(),   
-	    		                            mailBody,   
-	    		                            "no-reply@shoppinglistify.com",   
-	    		                            User.getInstance().getEmail());   
-	    		                } catch (Exception e) {   
-	    		                    Log.e("SendMail", e.getMessage(), e);   
-	    		                } 
+	    		        	
+	    					  String to = User.getInstance().getEmail();
+	    					  String subject = "Personalised Shopping List for " + dateFormat.format(calendar.getTime());
+
+	    					  Intent email = new Intent(Intent.ACTION_SEND);
+	    					  email.putExtra(Intent.EXTRA_EMAIL, new String[]{ to});
+	    					  email.putExtra(Intent.EXTRA_SUBJECT, subject);
+	    					  email.putExtra(Intent.EXTRA_TEXT, "Please open the attached file for your shopping list");
+	    					  File file;
+	    					  try
+	    					  {
+		    					  file = new File(Environment.getExternalStorageDirectory() + "/ie_dit_britton_darren_shoppinglist/lists/shoppinglist.html");
+	    					  }
+	    					  catch(Exception e)
+	    					  {
+	    						  MakeToast("File not Found");
+	    						  return null;
+	    					  }
+	    					  
+	    					  Uri uri = Uri.fromFile(file);
+	    					  email.putExtra(Intent.EXTRA_STREAM, uri);
+
+	    					  email.setType("message/rfc822");
+	    		 
+	    					  startActivity(Intent.createChooser(email, "Choose an Email client :"));
 
 							return null;
 	    		        }
         		   }
         		  
         		   new SendEmail().execute();
-        		   MakeToast("\nTransaction Completed\n Your Shopping List Has Been Emailed To You");
+        		   MakeToast("Transaction Completed");
 	                	        	
 	            }
 	        });
         
         currency = NumberFormat.getCurrencyInstance(Locale.ITALY);
         
-        mailBody += "Name\tQuantity\tVAT\tPrice\tTotal";
+        
+        mailBody = getResources().getString(R.string.htmlStart);
         
         basket = Basket.getInstance();
         purchasesTable = (TableLayout) findViewById(R.id.purchases);
@@ -98,6 +141,7 @@ public class CheckoutView extends ActionBarActivity
         {
         	if(p.getQuantity() > 0)
         	{
+        		mailBody += "<tr>";
             	purchase = new TableRow(this);
             	purchase.setLayoutParams(layoutParams);
             	TextView name = new TextView(this);
@@ -106,15 +150,16 @@ public class CheckoutView extends ActionBarActivity
             	TextView price = new TextView(this);
             	TextView total = new TextView(this);
             	name.setText(p.getName());
+            	mailBody += "<td>" + p.getName() + "<td>";
             	quantity.setText(String.valueOf(p.getQuantity()));
-            	mailBody += String.valueOf(p.getQuantity()) + "\t";
+            	mailBody += "<td>" + String.valueOf(p.getQuantity()) + "</td>";
             	VAT.setText(String.valueOf(currency.format(p.getVat())));
-            	mailBody += String.valueOf(currency.format(p.getVat())) + "\t";
+            	mailBody += "<td>" + String.valueOf(currency.format(p.getVat())) + "</td>";
             	price.setText(String.valueOf(currency.format(p.getPrice())));
-            	mailBody += String.valueOf(currency.format(p.getPrice())) + "\t";
+            	mailBody += "<td>" + String.valueOf(currency.format(p.getPrice())) + "</td>";
             	total.setText(String.valueOf(currency.format(p.getTotal())));
-            	mailBody += String.valueOf(currency.format(p.getTotal())) + "\t";
-            	mailBody += "\n";
+            	mailBody += "<td>" + String.valueOf(currency.format(p.getTotal())) + "</td>";
+            	mailBody += "</tr>";
             	name.setLayoutParams(layoutParams);
             	quantity.setLayoutParams(layoutParams);
             	VAT.setLayoutParams(layoutParams);
@@ -129,7 +174,7 @@ public class CheckoutView extends ActionBarActivity
             	purchasesTable.addView(purchase);
         	}
         }
-        
+        mailBody += "<tfoot> <td></td><td></td><td></td><td></td>";
       	purchase = new TableRow(this);
     	purchase.setLayoutParams(layoutParams);
     	TextView name = new TextView(this);
@@ -138,8 +183,8 @@ public class CheckoutView extends ActionBarActivity
     	TextView price = new TextView(this);
     	TextView total = new TextView(this);
     	total.setText(String.valueOf(currency.format(basket.getTotal())));
-    	mailBody += String.valueOf(currency.format(basket.getTotal())) + "\t";
-    	mailBody += "\n";
+    	mailBody += "<td><b>" + String.valueOf(currency.format(basket.getTotal())) + "</td></b>";
+    	mailBody += getResources().getString(R.string.htmlEnd);
     	layoutParams.setMargins(0, 5, 0, 0);
     	name.setLayoutParams(layoutParams);
     	quantity.setLayoutParams(layoutParams);

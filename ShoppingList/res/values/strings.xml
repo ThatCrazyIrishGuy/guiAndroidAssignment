@@ -25,6 +25,9 @@
     <string name="tableHeaderPrice"><b>Price</b></string>
     <string name="tableHeaderTotal"><b>Total</b></string>
     
+    <string name="htmlStart"><![CDATA[<!DOCTYPE html><html> <head> <style type="text/css"> table.gridtable{font-family: verdana, arial, sans-serif; font-size:11px; color:#333333; border-width: 1px; border-color: #666666; border-collapse: collapse;}table.gridtable th{border-width: 1px; padding: 8px; border-style: solid; border-color: #666666; background-color: #dedede;}table.gridtable td{border-width: 1px; padding: 8px; border-style: solid; border-color: #666666; background-color: #ffffff;}table.gridtable tfoot td{border-width: 0px; padding: 8px;}</style> </head> <body> <table class="gridtable"> <tr> <th><b>Name</b> </th> <th><b>Quantity</b> </th> <th><b>VAT</b> </th> <th><b>Price</b> </th> <th><b>Total</b> </th> </tr>]]></string>
+    <string name="htmlEnd"><![CDATA[</table></body></html>]]></string>
+    
     <string-array name="jobTitles">
 	    <item>Abattoir Worker</item>
 	    <item>Accountant</item>
