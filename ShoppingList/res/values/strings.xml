@@ -19,6 +19,11 @@
     <string name="viewCart">View Cart</string>
     <string name="checkout">Checkout</string>
     <string name="modifyCart">Modify Cart</string>
+    <string name="tableHeaderName"><b>Name</b></string>
+    <string name="tableHeaderQuantity"><b>Quantity</b></string>
+    <string name="tableHeaderVAT"><b>VAT</b></string>
+    <string name="tableHeaderPrice"><b>Price</b></string>
+    <string name="tableHeaderTotal"><b>Total</b></string>
     
     <string-array name="jobTitles">
 	    <item>Abattoir Worker</item>

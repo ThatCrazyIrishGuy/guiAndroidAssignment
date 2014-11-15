@@ -14,15 +14,15 @@
 		    android:padding="5dp">
 		    <TableRow android:id="@+id/header">
 		        <TextView
-		            android:text="Name" />
+		            android:text="@string/tableHeaderName" />
 		        <TextView
-		            android:text="Quantity" />
+		            android:text="@string/tableHeaderQuantity" />
 		 	        <TextView
-		            android:text="VAT" />
+		            android:text="@string/tableHeaderVAT" />
 		       	<TextView
-		            android:text="Price" />
+		            android:text="@string/tableHeaderPrice" />
 		       	<TextView
-		            android:text="Total" />
+		            android:text="@string/tableHeaderTotal" />
 		    </TableRow>
 		</TableLayout>
 		

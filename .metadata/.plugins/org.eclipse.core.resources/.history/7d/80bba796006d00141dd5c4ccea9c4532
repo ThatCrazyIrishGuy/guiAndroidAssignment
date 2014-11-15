@@ -1,0 +1,5 @@
+package ie.dit.britton.darren.shoppinglist;
+
+public class GmailSender {
+
+}

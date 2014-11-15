@@ -74,9 +74,9 @@ public class UserDetailForm extends ActionBarActivity
             		}
             		else
             		{
-            	    	String message = "Please complete all fields";
+            	    	String message = "Please complete all fields / Enter valid values";
             	    	
-            	    	Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+            	    	MakeToast(message);
             		}
                 }
             });
@@ -135,32 +135,32 @@ public class UserDetailForm extends ActionBarActivity
         
         user.setJob(job.getSelectedItem().toString());
         
-        if(age.getText().length() != 0)
+        try
         {
-        	Log.i("info","Age: " +Short.parseShort(age.getText().toString()));
+        	//Log.i("info","Age: " +Short.parseShort(age.getText().toString()));
             user.setAge(Short.parseShort(age.getText().toString()));
         }
-        else
+        catch(Exception e)
         {
         	return false;
         }
         
-        if(money.getText().length() != 0)
+        try
         {
-        	Log.i("info","Money: " +Double.parseDouble(money.getText().toString()));
+        	//Log.i("info","Money: " +Double.parseDouble(money.getText().toString()));
             user.setMoney(Double.parseDouble(money.getText().toString()));
         }
-        else
+        catch(Exception e)
         {
         	return false;
         }
         
-        if (email.getText().length() != 0)
+        try
         {
-        	Log.i("info","Email: " +email.getText().toString());
+        	//Log.i("info","Email: " +email.getText().toString());
             user.setEmail(email.getText().toString());
         }
-        else
+        catch(Exception e)
         {
         	return false;
         }

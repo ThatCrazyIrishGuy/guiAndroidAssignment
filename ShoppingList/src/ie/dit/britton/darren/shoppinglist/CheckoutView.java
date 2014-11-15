@@ -1,29 +1,23 @@
 package ie.dit.britton.darren.shoppinglist;
 
 import java.text.NumberFormat;
-
+import java.util.Calendar;
 import java.util.Locale;
 
-import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
+import android.widget.TableRow.LayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.TableRow.LayoutParams;
 
 
 public class CheckoutView extends ActionBarActivity 
@@ -36,6 +30,7 @@ public class CheckoutView extends ActionBarActivity
 	TableRow purchase;
 	NumberFormat currency;
 	Toast toast;
+	String mailBody;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -54,6 +49,8 @@ public class CheckoutView extends ActionBarActivity
 	            }
 	        });
         
+        final Calendar calendar = Calendar.getInstance();
+                
         checkout =(Button)findViewById(R.id.checkout);
         checkout.setOnClickListener(
 	        new OnClickListener()
@@ -61,16 +58,35 @@ public class CheckoutView extends ActionBarActivity
 	        	@Override
 	            public void onClick(View view)
 	            {
-	        		MakeToast("Transaction Completed\nExiting in 3");
-	        		SystemClock.sleep(1000);
-	        		MakeToast("Transaction Completed\nExiting in 2");
-	        		SystemClock.sleep(1000);
-	        		MakeToast("Transaction Completed\nExiting in 1");
-	        		SystemClock.sleep(1000);
+	        		
+        		   class SendEmail extends AsyncTask<Void, Void, Void>
+        		   {
+	    		        @Override
+	    		        protected Void doInBackground(Void... params) {
+	    		        	 try {   
+	    		                    GMailSender sender = new GMailSender("shoppinglistify@gmail.com",
+	    		                    		"01189998819991197253");
+	    		                    sender.sendMail("Your Personalised Shopping List for" + calendar.getTime(),   
+	    		                            mailBody,   
+	    		                            "no-reply@shoppinglistify.com",   
+	    		                            User.getInstance().getEmail());   
+	    		                } catch (Exception e) {   
+	    		                    Log.e("SendMail", e.getMessage(), e);   
+	    		                } 
+
+							return null;
+	    		        }
+        		   }
+        		  
+        		   new SendEmail().execute();
+        		   MakeToast("\nTransaction Completed\n Your Shopping List Has Been Emailed To You");
+	                	        	
 	            }
 	        });
         
         currency = NumberFormat.getCurrencyInstance(Locale.ITALY);
+        
+        mailBody += "Name\tQuantity\tVAT\tPrice\tTotal";
         
         basket = Basket.getInstance();
         purchasesTable = (TableLayout) findViewById(R.id.purchases);
@@ -91,9 +107,14 @@ public class CheckoutView extends ActionBarActivity
             	TextView total = new TextView(this);
             	name.setText(p.getName());
             	quantity.setText(String.valueOf(p.getQuantity()));
+            	mailBody += String.valueOf(p.getQuantity()) + "\t";
             	VAT.setText(String.valueOf(currency.format(p.getVat())));
+            	mailBody += String.valueOf(currency.format(p.getVat())) + "\t";
             	price.setText(String.valueOf(currency.format(p.getPrice())));
+            	mailBody += String.valueOf(currency.format(p.getPrice())) + "\t";
             	total.setText(String.valueOf(currency.format(p.getTotal())));
+            	mailBody += String.valueOf(currency.format(p.getTotal())) + "\t";
+            	mailBody += "\n";
             	name.setLayoutParams(layoutParams);
             	quantity.setLayoutParams(layoutParams);
             	VAT.setLayoutParams(layoutParams);
@@ -117,6 +138,8 @@ public class CheckoutView extends ActionBarActivity
     	TextView price = new TextView(this);
     	TextView total = new TextView(this);
     	total.setText(String.valueOf(currency.format(basket.getTotal())));
+    	mailBody += String.valueOf(currency.format(basket.getTotal())) + "\t";
+    	mailBody += "\n";
     	layoutParams.setMargins(0, 5, 0, 0);
     	name.setLayoutParams(layoutParams);
     	quantity.setLayoutParams(layoutParams);
