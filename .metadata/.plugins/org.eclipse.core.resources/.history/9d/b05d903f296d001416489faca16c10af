@@ -67,7 +67,7 @@ public class ShoppingListView extends ListActivity
 		public View getView(final int position,  View view, ViewGroup parent)
 		{
 			View vi = view; 
-			ViewHolder holder = null;
+			final ViewHolder holder = null;
 			
 		    if (view == null)
 		    {
@@ -76,11 +76,11 @@ public class ShoppingListView extends ListActivity
 		        vi = inflater.inflate(R.layout.row, parent, false);
 		        holder = new ViewHolder();
 		        
-		        holder.tvName = (TextView) vi.findViewById(textViewResourceId);
-		        holder.tvPrice = (TextView) vi.findViewById(priceResourceId);
-		        holder.tvPlus = (Button) vi.findViewById(plusResourceId);
-		        holder.tvMinus = (Button) vi.findViewById(minusResourceId);
-		        holder.tvQuantity =  (TextView) vi.findViewById(quantityResourceId);
+		        holder.tvName = (TextView) view.findViewById(textViewResourceId);
+		        holder.tvPrice = (TextView) view.findViewById(priceResourceId);
+		        holder.tvPlus = (Button) view.findViewById(plusResourceId);
+		        holder.tvMinus = (Button) view.findViewById(minusResourceId);
+		        holder.tvQuantity =  (TextView) view.findViewById(quantityResourceId);
 		        vi.setTag(holder);
 		    }
 		    else
@@ -91,9 +91,6 @@ public class ShoppingListView extends ListActivity
 	        final Item item = store.getItem(position);
 	        holder.tvName.setText(item.getName());
 	        holder.tvPrice.setText(currency.format(item.getPrice()));
-	        
-	        final ViewHolder viewHolderFinal = holder;
-	        
 	        if (basket.contains(item))
 	        {
 	        	holder.tvQuantity.setText(String.valueOf(basket.findItem(item).getQuantity()));
@@ -129,7 +126,7 @@ public class ShoppingListView extends ListActivity
 							}
 							
 					   		makeToast(currency.format(basket.getRemainingBudget()));
-							viewHolderFinal.tvQuantity.setText(String.valueOf(orderline.getQuantity()));
+							holder.tvQuantity.setText(String.valueOf(orderline.getQuantity()));
 						}
                    }
                });
@@ -145,7 +142,7 @@ public class ShoppingListView extends ListActivity
                		if (orderline.getQuantity() > 0)
                		{
 	               		orderline.setQuantity(orderline.getQuantity() - 1);
-	               		viewHolderFinal.tvQuantity.setText(String.valueOf(orderline.getQuantity()));
+	               		quantity.setText(String.valueOf(orderline.getQuantity()));
 	               		makeToast(currency.format(basket.getRemainingBudget()));
                		}	               		
                    }

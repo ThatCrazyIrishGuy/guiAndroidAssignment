@@ -17,22 +17,12 @@ import android.widget.Toast;
 import java.text.*;
 import java.util.Locale;
 
-
 public class ShoppingListView extends ListActivity
 {
 	
 	private Basket basket = Basket.getInstance();
 	private NumberFormat currency;
 	private Toast toast;
-	
-	static class ViewHolder
-	{
-		TextView tvName;
-		TextView tvPrice;
-		TextView tvQuantity;
-		Button tvPlus;
-		Button tvMinus;
-	}
 	
 	@SuppressLint("ViewHolder")
 	public class ShoppingListAdapter  extends ArrayAdapter<String>
@@ -66,44 +56,32 @@ public class ShoppingListView extends ListActivity
 		@Override
 		public View getView(final int position,  View view, ViewGroup parent)
 		{
-			View vi = view; 
-			ViewHolder holder = null;
-			
 		    if (view == null)
 		    {
 				LayoutInflater inflater=getLayoutInflater();
 				inflater =(LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		        vi = inflater.inflate(R.layout.row, parent, false);
-		        holder = new ViewHolder();
+		        view = inflater.inflate(R.layout.row, parent, false);
 		        
-		        holder.tvName = (TextView) vi.findViewById(textViewResourceId);
-		        holder.tvPrice = (TextView) vi.findViewById(priceResourceId);
-		        holder.tvPlus = (Button) vi.findViewById(plusResourceId);
-		        holder.tvMinus = (Button) vi.findViewById(minusResourceId);
-		        holder.tvQuantity =  (TextView) vi.findViewById(quantityResourceId);
-		        vi.setTag(holder);
-		    }
-		    else
-		    {
-		    	holder = (ViewHolder) vi.getTag();
 		    }
 		    
 	        final Item item = store.getItem(position);
-	        holder.tvName.setText(item.getName());
-	        holder.tvPrice.setText(currency.format(item.getPrice()));
-	        
-	        final ViewHolder viewHolderFinal = holder;
-	        
+	        TextView name = (TextView) view.findViewById(textViewResourceId);
+	        name.setText(item.getName());
+	        TextView price = (TextView) view.findViewById(priceResourceId);
+	        price.setText(currency.format(item.getPrice()));
+	        Button plus = (Button) view.findViewById(plusResourceId);
+	        Button minus = (Button) view.findViewById(minusResourceId);
+	        final TextView quantity = (TextView) view.findViewById(quantityResourceId);
 	        if (basket.contains(item))
 	        {
-	        	holder.tvQuantity.setText(String.valueOf(basket.findItem(item).getQuantity()));
+	        	quantity.setText(String.valueOf(basket.findItem(item).getQuantity()));
 	        }
 	        else
 	        {
-	        	holder.tvQuantity.setText("0");
+	        	quantity.setText("0");
 	        }
 	        
-			holder.tvPlus.setOnClickListener(
+			plus.setOnClickListener(
                new OnClickListener()
                {
                	@Override
@@ -129,12 +107,12 @@ public class ShoppingListView extends ListActivity
 							}
 							
 					   		makeToast(currency.format(basket.getRemainingBudget()));
-							viewHolderFinal.tvQuantity.setText(String.valueOf(orderline.getQuantity()));
+							quantity.setText(String.valueOf(orderline.getQuantity()));
 						}
                    }
                });
 			
-			holder.tvMinus.setOnClickListener(
+			minus.setOnClickListener(
                new OnClickListener()
                {
                	   @Override
@@ -145,7 +123,7 @@ public class ShoppingListView extends ListActivity
                		if (orderline.getQuantity() > 0)
                		{
 	               		orderline.setQuantity(orderline.getQuantity() - 1);
-	               		viewHolderFinal.tvQuantity.setText(String.valueOf(orderline.getQuantity()));
+	               		quantity.setText(String.valueOf(orderline.getQuantity()));
 	               		makeToast(currency.format(basket.getRemainingBudget()));
                		}	               		
                    }
