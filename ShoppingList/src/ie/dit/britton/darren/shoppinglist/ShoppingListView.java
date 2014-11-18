@@ -1,22 +1,30 @@
 package ie.dit.britton.darren.shoppinglist;
 
-import android.annotation.SuppressLint;
-
-import android.app.ListActivity;
-import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.View.OnClickListener;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
-import java.text.*;
+import java.text.NumberFormat;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
+import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.app.ListActivity;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Filter;
+import android.widget.Filterable;
+import android.widget.TextView;
+import android.widget.Toast;
 
 public class ShoppingListView extends ListActivity
 {
@@ -24,60 +32,82 @@ public class ShoppingListView extends ListActivity
 	private Basket basket = Basket.getInstance();
 	private NumberFormat currency;
 	private Toast toast;
+	ShoppingListAdapter adapter;
 	
 	static class ViewHolder
 	{
 		TextView tvName;
 		TextView tvPrice;
 		TextView tvQuantity;
+		Button tvDescription;
 		Button tvPlus;
 		Button tvMinus;
 	}
 	
 	@SuppressLint("ViewHolder")
-	public class ShoppingListAdapter  extends ArrayAdapter<String>
+	public class ShoppingListAdapter  extends ArrayAdapter<Item> implements Filterable
 	{
 		Context context;
-		Store store;
-		String[] values;
+		List<Item> values;
+		LayoutInflater shoppingListInflater;
 		int textViewResourceId;
 		int priceResourceId;
+		int descriptionResourceId;
 		int plusResourceId;
 		int minusResourceId;
 		int quantityResourceId;
 		
+		ItemFilter shoppingListFilter = new ItemFilter();
+	    List<Item>originalData;
+	    List<Item>filteredData;
+		
 		public ShoppingListAdapter(Context context,int resource,int textViewResourceId,
-				int priceResourceId, int plusResourceId, int minusResourceId, int quantityResourceId,String[] values)
+				int priceResourceId, int descriptionResourceId, int plusResourceId, int minusResourceId, int quantityResourceId,List<Item> values)
 		{
 			super(context,resource,textViewResourceId,values);
 			
-			store = Store.getInstance();
+			shoppingListInflater = LayoutInflater.from(context);
 			
 			this.textViewResourceId = textViewResourceId;
 			this.priceResourceId = priceResourceId;
+			this.descriptionResourceId = descriptionResourceId;
 			this.plusResourceId = plusResourceId;
 			this.minusResourceId = minusResourceId;
 			this.quantityResourceId = quantityResourceId;
 			this.context = context;
 			this.values = values;
+			
+			filteredData = values;
+	        originalData = values;
 		}
+		
 
-		@SuppressLint({ "ViewHolder", "InflateParams" })
+	    public int getCount() {
+	        return filteredData.size();
+	    }
+
+	    public Item getItem(int position) {
+	        return filteredData.get(position);
+	    }
+
+	    public long getItemId(int position) {
+	        return position;
+	    }
+
 		@Override
 		public View getView(final int position,  View view, ViewGroup parent)
 		{
 			View vi = view; 
 			ViewHolder holder = null;
 			
-		    if (view == null)
+		    if (vi == null)
 		    {
-				LayoutInflater inflater=getLayoutInflater();
-				inflater =(LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		        vi = inflater.inflate(R.layout.row, parent, false);
+		        vi = shoppingListInflater.inflate(R.layout.row, parent, false);
 		        holder = new ViewHolder();
 		        
 		        holder.tvName = (TextView) vi.findViewById(textViewResourceId);
 		        holder.tvPrice = (TextView) vi.findViewById(priceResourceId);
+		        holder.tvDescription = (Button) vi.findViewById(descriptionResourceId);
 		        holder.tvPlus = (Button) vi.findViewById(plusResourceId);
 		        holder.tvMinus = (Button) vi.findViewById(minusResourceId);
 		        holder.tvQuantity =  (TextView) vi.findViewById(quantityResourceId);
@@ -88,7 +118,7 @@ public class ShoppingListView extends ListActivity
 		    	holder = (ViewHolder) vi.getTag();
 		    }
 		    
-	        final Item item = store.getItem(position);
+	        final Item item = filteredData.get(position);
 	        holder.tvName.setText(item.getName());
 	        holder.tvPrice.setText(currency.format(item.getPrice()));
 	        
@@ -103,10 +133,26 @@ public class ShoppingListView extends ListActivity
 	        	holder.tvQuantity.setText("0");
 	        }
 	        
+	        holder.tvDescription.setOnClickListener(
+    		 new OnClickListener()
+             {
+                 public void onClick(View view)
+                 {
+             		new AlertDialog.Builder(getContext())
+             	    .setTitle("Description of " + item.getName() + ":")
+             	    .setMessage(item.getDescription())
+             	    .setNeutralButton("close", new DialogInterface.OnClickListener() {
+             	        public void onClick(DialogInterface dialog, int which) { 
+             	        	dialog.cancel();
+             	        }
+             	     })
+             	     .show();
+                 }
+             });
+	        
 			holder.tvPlus.setOnClickListener(
                new OnClickListener()
                {
-               	@Override
                    public void onClick(View view)
                    {
 						OrderLine orderline = basket.findItem(item);
@@ -137,7 +183,6 @@ public class ShoppingListView extends ListActivity
 			holder.tvMinus.setOnClickListener(
                new OnClickListener()
                {
-               	   @Override
                    public void onClick(View view)
                    {
                		OrderLine orderline = basket.findItem(item);
@@ -148,25 +193,65 @@ public class ShoppingListView extends ListActivity
 	               		viewHolderFinal.tvQuantity.setText(String.valueOf(orderline.getQuantity()));
 	               		makeToast(currency.format(basket.getRemainingBudget()));
                		}	               		
-                   }
+                  }
                }
 			);
 		        
-	        return view;
+	        return vi;
 		}
+		
+	    public Filter getFilter() {
+	    	makeToast(String.valueOf(filteredData.size()));
+	        return shoppingListFilter;
+	    }
+		
+		private class ItemFilter extends Filter {
+	        @SuppressLint("DefaultLocale")
+			@Override
+	        protected FilterResults performFiltering(CharSequence constraint) {
+
+	            String needle = constraint.toString().toLowerCase();
+
+	            FilterResults results = new FilterResults();
+
+	            int count = originalData.size();
+	            final ArrayList<Item> matchList = new ArrayList<Item>();
+
+	            String haystack;
+
+	            for (int i = 0; i < count; i++) {
+	            	Item item = originalData.get(i);
+	                haystack = item.getName();
+	                if (haystack.toLowerCase().contains(needle)) {
+	                    matchList.add(item);
+	                }
+	            }
+
+	            results.values = matchList;
+	            results.count = matchList.size();
+
+	            return results;
+	        }
+
+	        @SuppressWarnings("unchecked")
+	        @Override
+	        protected void publishResults(CharSequence constraint, FilterResults results) {
+	            filteredData = (ArrayList<Item>) results.values;
+	            notifyDataSetChanged();
+	        }
 
 	}
-	
-    @Override
+}
+		
+	@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.shopping_list_view);
+        setContentView(R.layout.shopping_list_view); 
         
         Button checkout = (Button)findViewById(R.id.checkout);
         checkout.setOnClickListener(
                 new OnClickListener()
                 {
-                	@Override
                     public void onClick(View view)
                     {
                 		checkout();
@@ -176,8 +261,21 @@ public class ShoppingListView extends ListActivity
         
         Store store = Store.getInstance();
         currency = NumberFormat.getCurrencyInstance(Locale.ITALY);
-        setListAdapter(new ShoppingListAdapter(this,R.layout.row,R.id.item,R.id.price,R.id.plus,R.id.minus,R.id.quantity,store.getItemNames()));
+        adapter = new ShoppingListAdapter(this,R.layout.row,R.id.item,R.id.price, R.id.description,R.id.plus,R.id.minus,R.id.quantity,store.getItemsAsArray());
+        setListAdapter(adapter);
+        
+        EditText search = (EditText) findViewById(R.id.searchField);
+        
+        search.addTextChangedListener(new TextWatcher(){
+			public void afterTextChanged(Editable s) {}
+			public void beforeTextChanged(CharSequence s, int start, int count, int after){}
+			public void onTextChanged(CharSequence s, int start, int before, int count)
+            {
+            	 adapter.getFilter().filter(s);
+            }
+        });
     }
+    
     
     private void checkout()
     {

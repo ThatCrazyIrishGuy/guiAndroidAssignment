@@ -1,18 +1,19 @@
 package ie.dit.britton.darren.shoppinglist;
 
 import java.io.File;
-import java.io.FileOutputStream;
+
 import java.io.OutputStreamWriter;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -26,6 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+@SuppressLint("WorldReadableFiles")
 public class CheckoutView extends ActionBarActivity 
 {
 
@@ -37,9 +39,9 @@ public class CheckoutView extends ActionBarActivity
 	NumberFormat currency;
 	Toast toast;
 	String mailBody;
-	String filePath;
 	
-    @Override
+    @SuppressWarnings("deprecation")
+	@Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
@@ -49,40 +51,19 @@ public class CheckoutView extends ActionBarActivity
         modifyCart.setOnClickListener(
 	        new OnClickListener()
 	        {
-	        	@Override
 	            public void onClick(View view)
 	            {
 	        		finish();
 	            }
 	        });
-        
-        try 
-        {   
-
-        	File dir = new File (Environment.getExternalStorageDirectory() + "/ie_dit_britton_darren_shoppinglist/lists/");
-        	dir.mkdirs();
-        	File file = new File(dir, "shoppinglist.html");
-
-        	FileOutputStream fOut = new FileOutputStream(file, false);
-            OutputStreamWriter osw = new OutputStreamWriter(fOut); 
-            osw.write(mailBody);
-            osw.flush();
-            osw.close();
-        }
-        catch (Exception e)
-        {
-        	e.printStackTrace();
-        }
-
-        
+    
         final Calendar calendar = Calendar.getInstance();
-        final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/mm/yyyy", Locale.UK);
+        final SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy|HH:mm:ss", Locale.UK);
                 
         checkout =(Button)findViewById(R.id.checkout);
         checkout.setOnClickListener(
 	        new OnClickListener()
 	        {
-	        	@Override
 	            public void onClick(View view)
 	            {
 	        		
@@ -90,32 +71,48 @@ public class CheckoutView extends ActionBarActivity
         		   {
 						@Override
 	    		        protected Void doInBackground(Void... params) {
-	    		        	
-	    					  String to = User.getInstance().getEmail();
-	    					  String subject = "Personalised Shopping List for " + dateFormat.format(calendar.getTime());
+	    		        		
+				        	OutputStreamWriter outputStream;
+				        	String currTime = dateFormat.format(calendar.getTime());
+				        	String fileName = "shopping-list-for-" + currTime + ".html";
 
-	    					  Intent email = new Intent(Intent.ACTION_SEND);
-	    					  email.putExtra(Intent.EXTRA_EMAIL, new String[]{ to});
-	    					  email.putExtra(Intent.EXTRA_SUBJECT, subject);
-	    					  email.putExtra(Intent.EXTRA_TEXT, "Please open the attached file for your shopping list");
-	    					  File file;
-	    					  try
-	    					  {
-		    					  file = new File(Environment.getExternalStorageDirectory() + "/ie_dit_britton_darren_shoppinglist/lists/shoppinglist.html");
-	    					  }
-	    					  catch(Exception e)
-	    					  {
-	    						  MakeToast("File not Found");
-	    						  return null;
-	    					  }
-	    					  
-	    					  Uri uri = Uri.fromFile(file);
-	    					  email.putExtra(Intent.EXTRA_STREAM, uri);
-
-	    					  email.setType("message/rfc822");
-	    		 
-	    					  startActivity(Intent.createChooser(email, "Choose an Email client :"));
-
+							try
+							{
+							  outputStream = new OutputStreamWriter(openFileOutput(fileName, Context.MODE_WORLD_READABLE));
+							  outputStream.write(mailBody);
+							  outputStream.close();
+							} 
+							catch (Exception e) 
+							{
+							  e.printStackTrace();
+							}
+							
+							String to = User.getInstance().getEmail();
+							String subject = "Personalised Shopping List Created on " + currTime;
+							
+							Intent email = new Intent(Intent.ACTION_SEND);
+							email.putExtra(Intent.EXTRA_EMAIL, new String[]{ to});
+							email.putExtra(Intent.EXTRA_SUBJECT, subject);
+							email.putExtra(Intent.EXTRA_TEXT, "Please open the attached file for your shopping list");
+							File file;
+							try
+							{
+								file = new File(getBaseContext().getFilesDir() + "/" + fileName);
+							}
+							catch(Exception e)
+							{
+								e.printStackTrace();
+								MakeToast("File not Found");
+								return null;
+							}
+							  
+							Uri uri = Uri.fromFile(file);
+							email.putExtra(Intent.EXTRA_STREAM, uri);
+							
+							email.setType("message/rfc822");
+							 
+							startActivity(Intent.createChooser(email, "Choose an Email client :"));
+							
 							return null;
 	    		        }
         		   }
@@ -150,7 +147,7 @@ public class CheckoutView extends ActionBarActivity
             	TextView price = new TextView(this);
             	TextView total = new TextView(this);
             	name.setText(p.getName());
-            	mailBody += "<td>" + p.getName() + "<td>";
+            	mailBody += "<td>" + p.getName() + "</td>";
             	quantity.setText(String.valueOf(p.getQuantity()));
             	mailBody += "<td>" + String.valueOf(p.getQuantity()) + "</td>";
             	VAT.setText(String.valueOf(currency.format(p.getVat())));

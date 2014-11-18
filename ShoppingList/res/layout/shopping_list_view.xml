@@ -8,10 +8,19 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.customlist.MainActivity" >
 
+   	<EditText
+        android:layout_alignParentTop="true"
+        android:id="@+id/searchField"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint ="@string/search"
+        android:inputType="textVisiblePassword"  />
+    	
 	<ListView
 		android:layout_width="fill_parent"
 		android:layout_height="fill_parent"
 		android:layout_marginBottom="60dp"
+		android:layout_marginTop="35dp"
 		android:id="@android:id/list" >
 	</ListView>
 	

@@ -19,12 +19,10 @@ public class Store
 	}
 	
 	private List<Item> items;
-	private int count;
 	
 	public Store()
 	{
 		 items = new ArrayList<Item>();
-		 count = -1;
 	}
 	
 	public Item getItem(int i)
@@ -32,10 +30,9 @@ public class Store
 		return items.get(i);
 	}
 	
-	public Item getNextItem()
+	public List<Item> getItemsAsArray()
 	{
-		count++;
-		return items.get(count);
+		return items;
 	}
 
 	public String[] getItemNames()
@@ -51,19 +48,19 @@ public class Store
 		 return names.toArray(namesArray);
 	}
 	
-	public void populate(String[] names) 
+	public void populate(String[] names,String[] descriptions) 
 	{
 		Random r = new Random();
 		
         Double randPrice = 0.0;
 		
-		for(String name : names)
+		for(int i=0; i < names.length; i++)
 		{
 	        randPrice = r.nextDouble() * 10;
 	        randPrice *= 100;
 	        randPrice = (double) Math.round(randPrice);
 	        randPrice /= 100;
-			items.add(new Item(name,randPrice));
+			items.add(new Item(names[i],randPrice,descriptions[i]));
 		}
 		
 	}

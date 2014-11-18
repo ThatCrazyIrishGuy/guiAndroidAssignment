@@ -39,7 +39,7 @@ public class UserDetailForm extends ActionBarActivity
             @Override
             public void run() {
                 Store store = Store.getInstance();
-				store.populate(getResources().getStringArray(R.array.items));
+				store.populate(getResources().getStringArray(R.array.items),getResources().getStringArray(R.array.descriptions));
             }
         };
         
@@ -64,7 +64,6 @@ public class UserDetailForm extends ActionBarActivity
        submit.setOnClickListener(
             new OnClickListener()
             {
-            	@Override
                 public void onClick(View view)
                 {
             		boolean nextIntent =setUserDetails();

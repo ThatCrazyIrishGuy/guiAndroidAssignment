@@ -14,18 +14,20 @@
     <string name="submitButtonText">Submit</string>
     <string name="plus">+</string>
     <string name="minus">-</string>
+    <string name="description">\?</string>
     <string name="zero">0</string>
     <string name="loadDemoValues">Load Demo Values</string>
     <string name="viewCart">View Cart</string>
     <string name="checkout">Checkout</string>
     <string name="modifyCart">Modify Cart</string>
+    <string name="search">search</string>
     <string name="tableHeaderName"><b>Name</b></string>
     <string name="tableHeaderQuantity"><b>Quantity</b></string>
     <string name="tableHeaderVAT"><b>VAT</b></string>
     <string name="tableHeaderPrice"><b>Price</b></string>
     <string name="tableHeaderTotal"><b>Total</b></string>
     
-    <string name="htmlStart"><![CDATA[<!DOCTYPE html><html> <head> <style type="text/css"> table.gridtable{font-family: verdana, arial, sans-serif; font-size:11px; color:#333333; border-width: 1px; border-color: #666666; border-collapse: collapse;}table.gridtable th{border-width: 1px; padding: 8px; border-style: solid; border-color: #666666; background-color: #dedede;}table.gridtable td{border-width: 1px; padding: 8px; border-style: solid; border-color: #666666; background-color: #ffffff;}table.gridtable tfoot td{border-width: 0px; padding: 8px;}</style> </head> <body> <table class="gridtable"> <tr> <th><b>Name</b> </th> <th><b>Quantity</b> </th> <th><b>VAT</b> </th> <th><b>Price</b> </th> <th><b>Total</b> </th> </tr>]]></string>
+    <string name="htmlStart"><![CDATA[<!DOCTYPE html><html> <head> <meta charset="UTF-8"> <style type="text/css"> table.gridtable{font-family: verdana, arial, sans-serif; font-size:11px; color:#333333; border-width: 1px; border-color: #666666; border-collapse: collapse;}table.gridtable th{border-width: 1px; padding: 8px; border-style: solid; border-color: #666666; background-color: #dedede;}table.gridtable td{border-width: 1px; padding: 8px; border-style: solid; border-color: #666666; background-color: #ffffff;}table.gridtable tfoot td{border-width: 0px; padding: 8px;}</style> </head> <body> <table class="gridtable"> <tr> <th><b>Name</b> </th> <th><b>Quantity</b> </th> <th><b>VAT</b> </th> <th><b>Price</b> </th> <th><b>Total</b> </th> </tr>]]></string>
     <string name="htmlEnd"><![CDATA[</table></body></html>]]></string>
     
     <string-array name="jobTitles">
@@ -757,6 +759,155 @@
 		<item>creams</item>
 		<item>medicine</item>
 		<item>nappies</item>
+	</string-array>
+	
+    <string-array name="descriptions">
+		<item>A round, edible fruit that, when eaten once a day, keeps the doctor away.</item>
+		<item>A round, edible fruit that, ranging in colour from yellow to orange, which has a taste ranging from sweet to tart.</item>
+		<item>This fruit is typically green, but some varieties can be yellow, red, and purple. The fruit contains one large seed, which is surrounded by an oily yellowish-green flesh that is soft and mildly sweet when properly ripened.</item>
+		<item>One of the only words in the english language with the ability to make you feel stupid every time you try to write or type it.</item>
+		<item>a delicious blu-ish fruit chock full of antioxidants!</item>
+		<item>a small red fruit with a hard pit that grows on trees. There are red and black varietes.</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
+		<item>I was too lazy to write all the descriptions, So I only the first 6</item>
 	</string-array>
 
 </resources>
