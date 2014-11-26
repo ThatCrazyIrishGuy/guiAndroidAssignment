@@ -24,28 +24,38 @@ import android.widget.EditText;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class ShoppingListView extends ListActivity
 {
-	
+
 	private Basket basket = Basket.getInstance();
+	/**
+	 * used to format the doubles the currency is stored in to a euro printable
+	 * format
+	 */
 	private NumberFormat currency;
-	private Toast toast;
 	ShoppingListAdapter adapter;
-	
+
+	/**
+	 * the viewholder pattern allows us to store the row elements for later use
+	 * preventing unnecessary and expensive geviewById calls. the following
+	 * example code was used to assist my implementation:
+	 * http://www.javacodegeeks
+	 * .com/2013/09/android-viewholder-pattern-example.html
+	 */
 	static class ViewHolder
 	{
-		TextView tvName;
-		TextView tvPrice;
-		TextView tvQuantity;
-		Button tvDescription;
-		Button tvPlus;
-		Button tvMinus;
+		TextView vhName;
+		TextView vhPrice;
+		TextView vhQuantity;
+		Button vhDescription;
+		Button vhPlus;
+		Button vhMinus;
 	}
-	
+
 	@SuppressLint("ViewHolder")
-	public class ShoppingListAdapter  extends ArrayAdapter<Item> implements Filterable
+	public class ShoppingListAdapter extends ArrayAdapter<Item> implements
+			Filterable
 	{
 		Context context;
 		List<Item> values;
@@ -56,18 +66,26 @@ public class ShoppingListView extends ListActivity
 		int plusResourceId;
 		int minusResourceId;
 		int quantityResourceId;
-		
+
+		/**
+		 * An item filter was used to enable search functionality. the necessary
+		 * class and methods for the interface Filterable were implemented along
+		 * with an efficient version of performFiltering function. The following
+		 * code was used as a guide: https://gist.github.com/fjfish/3024308
+		 */
 		ItemFilter shoppingListFilter = new ItemFilter();
-	    List<Item>originalData;
-	    List<Item>filteredData;
-		
-		public ShoppingListAdapter(Context context,int resource,int textViewResourceId,
-				int priceResourceId, int descriptionResourceId, int plusResourceId, int minusResourceId, int quantityResourceId,List<Item> values)
+		List<Item> originalData;
+		List<Item> filteredData;
+
+		public ShoppingListAdapter(Context context, int resource,
+				int textViewResourceId, int priceResourceId,
+				int descriptionResourceId, int plusResourceId,
+				int minusResourceId, int quantityResourceId, List<Item> values)
 		{
-			super(context,resource,textViewResourceId,values);
-			
+			super(context, resource, textViewResourceId, values);
+
 			shoppingListInflater = LayoutInflater.from(context);
-			
+
 			this.textViewResourceId = textViewResourceId;
 			this.priceResourceId = priceResourceId;
 			this.descriptionResourceId = descriptionResourceId;
@@ -76,220 +94,257 @@ public class ShoppingListView extends ListActivity
 			this.quantityResourceId = quantityResourceId;
 			this.context = context;
 			this.values = values;
-			
+
 			filteredData = values;
-	        originalData = values;
+			originalData = values;
 		}
-		
 
-	    public int getCount() {
-	        return filteredData.size();
-	    }
+		/**
+		 * these methods override getViews normal functions to return the same
+		 * details but on the filtered data set
+		 */
+		public int getCount()
+		{
+			return filteredData.size();
+		}
 
-	    public Item getItem(int position) {
-	        return filteredData.get(position);
-	    }
+		public Item getItem(int position)
+		{
+			return filteredData.get(position);
+		}
 
-	    public long getItemId(int position) {
-	        return position;
-	    }
+		public long getItemId(int position)
+		{
+			return position;
+		}
 
 		@Override
-		public View getView(final int position,  View view, ViewGroup parent)
+		public View getView(final int position, View view, ViewGroup parent)
 		{
-			View vi = view; 
+			View vi = view;
+
 			ViewHolder holder = null;
-			
-		    if (vi == null)
-		    {
-		        vi = shoppingListInflater.inflate(R.layout.row, parent, false);
-		        holder = new ViewHolder();
-		        
-		        holder.tvName = (TextView) vi.findViewById(textViewResourceId);
-		        holder.tvPrice = (TextView) vi.findViewById(priceResourceId);
-		        holder.tvDescription = (Button) vi.findViewById(descriptionResourceId);
-		        holder.tvPlus = (Button) vi.findViewById(plusResourceId);
-		        holder.tvMinus = (Button) vi.findViewById(minusResourceId);
-		        holder.tvQuantity =  (TextView) vi.findViewById(quantityResourceId);
-		        vi.setTag(holder);
-		    }
-		    else
-		    {
-		    	holder = (ViewHolder) vi.getTag();
-		    }
-		    
-	        final Item item = filteredData.get(position);
-	        holder.tvName.setText(item.getName());
-	        holder.tvPrice.setText(currency.format(item.getPrice()));
-	        
-	        final ViewHolder viewHolderFinal = holder;
-	        
-	        if (basket.contains(item))
-	        {
-	        	holder.tvQuantity.setText(String.valueOf(basket.findItem(item).getQuantity()));
-	        }
-	        else
-	        {
-	        	holder.tvQuantity.setText("0");
-	        }
-	        
-	        holder.tvDescription.setOnClickListener(
-    		 new OnClickListener()
-             {
-                 public void onClick(View view)
-                 {
-             		new AlertDialog.Builder(getContext())
-             	    .setTitle("Description of " + item.getName() + ":")
-             	    .setMessage(item.getDescription())
-             	    .setNeutralButton("close", new DialogInterface.OnClickListener() {
-             	        public void onClick(DialogInterface dialog, int which) { 
-             	        	dialog.cancel();
-             	        }
-             	     })
-             	     .show();
-                 }
-             });
-	        
-			holder.tvPlus.setOnClickListener(
-               new OnClickListener()
-               {
-                   public void onClick(View view)
-                   {
-						OrderLine orderline = basket.findItem(item);
-						
-						if(basket.getRemainingBudget() <= orderline.getPrice())
+
+			if (vi == null)
+			{
+				vi = shoppingListInflater.inflate(R.layout.row, parent, false);
+				holder = new ViewHolder();
+				holder.vhName = (TextView) vi.findViewById(textViewResourceId);
+				holder.vhPrice = (TextView) vi.findViewById(priceResourceId);
+				holder.vhDescription = (Button) vi
+						.findViewById(descriptionResourceId);
+				holder.vhPlus = (Button) vi.findViewById(plusResourceId);
+				holder.vhMinus = (Button) vi.findViewById(minusResourceId);
+				holder.vhQuantity = (TextView) vi
+						.findViewById(quantityResourceId);
+				vi.setTag(holder);
+			} else
+			{
+				holder = (ViewHolder) vi.getTag();
+			}
+
+			final Item item = filteredData.get(position);
+			holder.vhName.setText(item.getName());
+			holder.vhPrice.setText(currency.format(item.getPrice()));
+
+			final ViewHolder viewHolderFinal = holder;
+
+			if (basket.contains(item))
+			{
+				holder.vhQuantity.setText(String.valueOf(basket.findItem(item)
+						.getQuantity()));
+			} else
+			{
+				holder.vhQuantity.setText("0");
+			}
+
+			holder.vhDescription.setOnClickListener(new OnClickListener() {
+				/**
+				 * creates the alert dialog that displays the item description
+				 */
+				public void onClick(View view)
+				{
+					new AlertDialog.Builder(getContext())
+							.setTitle("Description of " + item.getName() + ":")
+							.setMessage(item.getDescription())
+							.setNeutralButton("close",
+									new DialogInterface.OnClickListener() {
+										public void onClick(
+												DialogInterface dialog,
+												int which)
+										{
+											dialog.cancel();
+										}
+									}).show();
+				}
+			});
+
+			holder.vhPlus.setOnClickListener(new OnClickListener() {
+				public void onClick(View view)
+				{
+					OrderLine orderline = basket.findItem(item);
+
+					if (basket.getRemainingBudget() <= orderline.getPrice())
+					{
+						Display.makeToast(
+								"Cannot Excede Budget \n"
+										+ currency.format(basket
+												.getRemainingBudget())
+										+ " Remaining", context);
+					} else
+					{
+						/**
+						 * returns -1.0 when item does not exist in basket
+						 */
+						if (orderline.getQuantity() == -1.0)
 						{
-							makeToast("Cannot Excede Budget \n" + currency.format(basket.getRemainingBudget())
-								+ " Remaining");
-						}
-						else
+							orderline.setQuantity(orderline.getQuantity() + 2);
+							basket.addItem(orderline);
+						} else
 						{
-							if (orderline.getQuantity() == -1.0)
-							{
-						   		orderline.setQuantity(orderline.getQuantity() + 2);
-						   		basket.addItem(orderline);
-							}
-							else
-							{
-						   		orderline.setQuantity(orderline.getQuantity() + 1);
-							}
-							
-					   		makeToast(currency.format(basket.getRemainingBudget()));
-							viewHolderFinal.tvQuantity.setText(String.valueOf(orderline.getQuantity()));
+							orderline.setQuantity(orderline.getQuantity() + 1);
 						}
-                   }
-               });
-			
-			holder.tvMinus.setOnClickListener(
-               new OnClickListener()
-               {
-                   public void onClick(View view)
-                   {
-               		OrderLine orderline = basket.findItem(item);
-	               		
-               		if (orderline.getQuantity() > 0)
-               		{
-	               		orderline.setQuantity(orderline.getQuantity() - 1);
-	               		viewHolderFinal.tvQuantity.setText(String.valueOf(orderline.getQuantity()));
-	               		makeToast(currency.format(basket.getRemainingBudget()));
-               		}	               		
-                  }
-               }
-			);
-		        
-	        return vi;
+
+						Display.makeToast(
+								currency.format(basket.getRemainingBudget()),
+								context);
+						viewHolderFinal.vhQuantity.setText(String
+								.valueOf(orderline.getQuantity()));
+					}
+				}
+			});
+
+			holder.vhMinus.setOnClickListener(new OnClickListener() {
+				public void onClick(View view)
+				{
+					OrderLine orderline = basket.findItem(item);
+
+					if (orderline.getQuantity() > 0)
+					{
+						orderline.setQuantity(orderline.getQuantity() - 1);
+						viewHolderFinal.vhQuantity.setText(String
+								.valueOf(orderline.getQuantity()));
+						Display.makeToast(
+								currency.format(basket.getRemainingBudget()),
+								context);
+					}
+				}
+			});
+
+			return vi;
 		}
-		
-	    public Filter getFilter() {
-	    	makeToast(String.valueOf(filteredData.size()));
-	        return shoppingListFilter;
-	    }
-		
-		private class ItemFilter extends Filter {
-	        @SuppressLint("DefaultLocale")
+
+		public Filter getFilter()
+		{
+			// Display.makeToast(String.valueOf(filteredData.size()), context);
+			return shoppingListFilter;
+		}
+
+		private class ItemFilter extends Filter
+		{
+			@SuppressLint("DefaultLocale")
 			@Override
-	        protected FilterResults performFiltering(CharSequence constraint) {
+			/**
+			 * this method does the actual filtering, taking a char sequence and
+			 * appending any item of which it is a substring to the match list
+			 * which is returned
+			 */
+			protected FilterResults performFiltering(CharSequence constraint)
+			{
 
-	            String needle = constraint.toString().toLowerCase();
+				String needle = constraint.toString().toLowerCase();
 
-	            FilterResults results = new FilterResults();
+				FilterResults results = new FilterResults();
 
-	            int count = originalData.size();
-	            final ArrayList<Item> matchList = new ArrayList<Item>();
+				int count = originalData.size();
+				final ArrayList<Item> matchList = new ArrayList<Item>();
 
-	            String haystack;
+				String haystack;
 
-	            for (int i = 0; i < count; i++) {
-	            	Item item = originalData.get(i);
-	                haystack = item.getName();
-	                if (haystack.toLowerCase().contains(needle)) {
-	                    matchList.add(item);
-	                }
-	            }
+				for (int i = 0; i < count; i++)
+				{
+					Item item = originalData.get(i);
+					haystack = item.getName() + item.getFormattedPrice()
+							+ item.getDescription();
+					if (haystack.toLowerCase().contains(needle))
+					{
+						matchList.add(item);
+					}
+				}
 
-	            results.values = matchList;
-	            results.count = matchList.size();
+				results.values = matchList;
+				results.count = matchList.size();
 
-	            return results;
-	        }
+				return results;
+			}
 
-	        @SuppressWarnings("unchecked")
-	        @Override
-	        protected void publishResults(CharSequence constraint, FilterResults results) {
-	            filteredData = (ArrayList<Item>) results.values;
-	            notifyDataSetChanged();
-	        }
+			@SuppressWarnings("unchecked")
+			@Override
+			/**
+			 * this function updates the filteredData to match the results and performs a NDSC to
+			 * update the view with the new filter results
+			 */
+			protected void publishResults(CharSequence constraint,
+					FilterResults results)
+			{
+				filteredData = (ArrayList<Item>) results.values;
+				notifyDataSetChanged();
+			}
 
+		}
 	}
-}
-		
+
 	@Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.shopping_list_view); 
-        
-        Button checkout = (Button)findViewById(R.id.checkout);
-        checkout.setOnClickListener(
-                new OnClickListener()
-                {
-                    public void onClick(View view)
-                    {
-                		checkout();
-                    }
-                });
-        
-        
-        Store store = Store.getInstance();
-        currency = NumberFormat.getCurrencyInstance(Locale.ITALY);
-        adapter = new ShoppingListAdapter(this,R.layout.row,R.id.item,R.id.price, R.id.description,R.id.plus,R.id.minus,R.id.quantity,store.getItemsAsArray());
-        setListAdapter(adapter);
-        
-        EditText search = (EditText) findViewById(R.id.searchField);
-        
-        search.addTextChangedListener(new TextWatcher(){
-			public void afterTextChanged(Editable s) {}
-			public void beforeTextChanged(CharSequence s, int start, int count, int after){}
-			public void onTextChanged(CharSequence s, int start, int before, int count)
-            {
-            	 adapter.getFilter().filter(s);
-            }
-        });
-    }
-    
-    
-    private void checkout()
-    {
-		Intent intent = new Intent(ShoppingListView.this,CheckoutView.class);
+	protected void onCreate(Bundle savedInstanceState)
+	{
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.shopping_list_view);
+
+		Button checkout = (Button) findViewById(R.id.checkout);
+		checkout.setOnClickListener(new OnClickListener() {
+			public void onClick(View view)
+			{
+				checkout();
+			}
+		});
+
+		Store store = Store.getInstance();
+		/**
+		 * The number formatter was set to italy because its closest to our own.
+		 */
+		currency = NumberFormat.getCurrencyInstance(Locale.ITALY);
+		adapter = new ShoppingListAdapter(this, R.layout.row, R.id.item,
+				R.id.price, R.id.description, R.id.plus, R.id.minus,
+				R.id.quantity, store.getItemsAsArray());
+		setListAdapter(adapter);
+
+		EditText search = (EditText) findViewById(R.id.searchField);
+
+		/**
+		 * Listener for edit text to call a filter on the list based on the
+		 * input char sequence S
+		 */
+		search.addTextChangedListener(new TextWatcher() {
+			public void afterTextChanged(Editable s)
+			{
+			}
+
+			public void beforeTextChanged(CharSequence s, int start, int count,
+					int after)
+			{
+			}
+
+			public void onTextChanged(CharSequence s, int start, int before,
+					int count)
+			{
+				adapter.getFilter().filter(s);
+			}
+		});
+	}
+
+	private void checkout()
+	{
+		Intent intent = new Intent(ShoppingListView.this, CheckoutView.class);
 		startActivity(intent);
-    }
-    
-    protected void makeToast(String message)
-    {  	
-    	if (toast != null)
-    	{
-    		toast.cancel();
-    	}
-    	toast = Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT);
-    	toast.show();
-    }
+	}
 }

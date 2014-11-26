@@ -3,11 +3,16 @@ package ie.dit.britton.darren.shoppinglist;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class is implemented as a singleton and encapsulates the users shopping
+ * cart/basket. When a user increases the quantity of an item from the shopping
+ * cart view from 0 to 1, its added to the Basket.items list
+ */
 public class Basket
 {
-	
+
 	private static Basket instance = null;
-	
+
 	public static Basket getInstance()
 	{
 		if (instance == null)
@@ -16,28 +21,27 @@ public class Basket
 		}
 		return instance;
 	}
-	
+
 	private List<OrderLine> items;
 	private User user;
-	
-	
+
 	public Basket()
 	{
 		user = User.getInstance();
 		items = new ArrayList<OrderLine>();
 	}
-	
+
 	public OrderLine[] getPurchases()
 	{
 		OrderLine[] temp = new OrderLine[items.size()];
 		return items.toArray(temp);
 	}
 
-	public void addItem(OrderLine item) 
+	public void addItem(OrderLine item)
 	{
 		items.add(item);
 	}
-	
+
 	public boolean contains(Item item)
 	{
 		for (OrderLine i : items)
@@ -49,7 +53,7 @@ public class Basket
 		}
 		return false;
 	}
-	
+
 	public OrderLine findItem(Item item)
 	{
 		for (OrderLine i : items)
@@ -59,28 +63,31 @@ public class Basket
 				return i;
 			}
 		}
-		return new OrderLine(item.getName(),item.getPrice(),-1);
+		return new OrderLine(item.getName(), item.getPrice(), -1);
 	}
 
 	public Double getTotal()
 	{
 		Double total = 0.0;
-		
+
 		for (OrderLine i : items)
 		{
-			total += i.getPrice() * i.getQuantity();
+			total += i.getTotal();
 		}
-		
+		/**
+		 * this code combats rounding errors associated with using the double
+		 * type
+		 */
 		total *= 100;
 		total = (double) Math.round(total);
 		total /= 100;
-		
+
 		return total;
 	}
-	
+
 	public Double getRemainingBudget()
 	{
 		return user.getMoney() - getTotal();
 	}
-	
+
 }

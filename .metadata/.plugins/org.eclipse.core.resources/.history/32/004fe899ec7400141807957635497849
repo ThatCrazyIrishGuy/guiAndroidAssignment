@@ -1,0 +1,305 @@
+package ie.dit.britton.darren.shoppinglist;
+
+import java.text.NumberFormat;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+
+import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.app.ListActivity;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Filter;
+import android.widget.Filterable;
+import android.widget.Texvhiew;
+
+public class ShoppingLisvhiew extends ListActivity
+{
+	
+	private Basket basket = Basket.getInstance();
+	/**
+	 * used to format the doubles the currency is stored in to a euro printable format
+	 */
+	private NumberFormat currency;
+	ShoppingListAdapter adapter;
+	
+	/**
+	 * the viewholder pattern allows us to store the row elements for later use
+	 * preventing unnecessary and expensive gevhiewById calls.
+	 * the following example code was used to assist my implementation:
+	 * http://www.javacodegeeks.com/2013/09/android-viewholder-pattern-example.html
+	 */
+	static class ViewHolder
+	{
+		Textview vhName;
+		Textview vhPrice;
+		Textview vhQuantity;
+		Button vhDescription;
+		Button vhPlus;
+		Button vhMinus;
+	}
+	
+	@SuppressLint("ViewHolder")
+	public class ShoppingListAdapter  extends ArrayAdapter<Item> implements Filterable
+	{
+		Context context;
+		List<Item> values;
+		LayoutInflater shoppingListInflater;
+		int texvhiewResourceId;
+		int priceResourceId;
+		int descriptionResourceId;
+		int plusResourceId;
+		int minusResourceId;
+		int quantityResourceId;
+		
+		/**
+		 * An item filter was used to enable search functionality.
+		 * the necessary class and methods for the interface Filterable
+		 * were implemented along with an efficient version of performFiltering function.
+		 * The following code was used as a guide:
+		 * https://gist.github.com/fjfish/3024308
+		 */
+		ItemFilter shoppingListFilter = new ItemFilter();
+	    List<Item>originalData;
+	    List<Item>filteredData;
+		
+		public ShoppingListAdapter(Context context,int resource,int texvhiewResourceId,
+				int priceResourceId, int descriptionResourceId, int plusResourceId,
+				int minusResourceId, int quantityResourceId,List<Item> values)
+		{
+			super(context,resource,texvhiewResourceId,values);
+			
+			shoppingListInflater = LayoutInflater.from(context);
+			
+			this.texvhiewResourceId = texvhiewResourceId;
+			this.priceResourceId = priceResourceId;
+			this.descriptionResourceId = descriptionResourceId;
+			this.plusResourceId = plusResourceId;
+			this.minusResourceId = minusResourceId;
+			this.quantityResourceId = quantityResourceId;
+			this.context = context;
+			this.values = values;
+			
+			filteredData = values;
+	        originalData = values;
+		}
+		
+		/**
+		 * these methods override gevhiews normal functions to return the same details but on the filtered data set
+		 */
+	    public int getCount() {
+	        return filteredData.size();
+	    }
+
+	    public Item getItem(int position) {
+	        return filteredData.get(position);
+	    }
+
+	    public long getItemId(int position) {
+	        return position;
+	    }
+
+		@Override
+		public View gevhiew(final int position,  View view, ViewGroup parent)
+		{
+			View vi = view; 
+			ViewHolder holder = null;
+			
+		    if (vi == null)
+		    {
+		        vi = shoppingListInflater.inflate(R.layout.row, parent, false);
+		        holder = new ViewHolder();
+		        
+		        holder.vhName = (Texvhiew) vi.findViewById(texvhiewResourceId);
+		        holder.vhPrice = (Texvhiew) vi.findViewById(priceResourceId);
+		        holder.vhDescription = (Button) vi.findViewById(descriptionResourceId);
+		        holder.vhPlus = (Button) vi.findViewById(plusResourceId);
+		        holder.vhMinus = (Button) vi.findViewById(minusResourceId);
+		        holder.vhQuantity =  (Texvhiew) vi.findViewById(quantityResourceId);
+		        vi.setTag(holder);
+		    }
+		    else
+		    {
+		    	holder = (ViewHolder) vi.getTag();
+		    }
+		    
+	        final Item item = filteredData.get(position);
+	        holder.vhName.setText(item.getName());
+	        holder.vhPrice.setText(currency.format(item.getPrice()));
+	        
+	        final ViewHolder viewHolderFinal = holder;
+	        
+	        if (basket.contains(item))
+	        {
+	        	holder.vhQuantity.setText(String.valueOf(basket.findItem(item).getQuantity()));
+	        }
+	        else
+	        {
+	        	holder.vhQuantity.setText("0");
+	        }
+	        
+	        holder.vhDescription.setOnClickListener(
+    		 new OnClickListener()
+             {
+    			 /**
+    			  * creates the alert dialog that displays the item description
+    			  */
+                 public void onClick(View view)
+                 {
+             		new AlertDialog.Builder(getContext())
+             	    .setTitle("Description of " + item.getName() + ":")
+             	    .setMessage(item.getDescription())
+             	    .setNeutralButton("close", new DialogInterface.OnClickListener() {
+             	        public void onClick(DialogInterface dialog, int which) { 
+             	        	dialog.cancel();
+             	        }
+             	     })
+             	     .show();
+                 }
+             });
+	        
+			holder.vhPlus.setOnClickListener(
+               new OnClickListener()
+               {
+                   public void onClick(View view)
+                   {
+						OrderLine orderline = basket.findItem(item);
+						
+						if(basket.getRemainingBudget() <= orderline.getPrice())
+						{
+							Display.makeToast("Cannot Excede Budget \n" + currency.format(basket.getRemainingBudget())
+								+ " Remaining", context);
+						}
+						else
+						{
+							if (orderline.getQuantity() == -1.0)
+							{
+						   		orderline.setQuantity(orderline.getQuantity() + 2);
+						   		basket.addItem(orderline);
+							}
+							else
+							{
+						   		orderline.setQuantity(orderline.getQuantity() + 1);
+							}
+							
+					   		Display.makeToast(currency.format(basket.getRemainingBudget()),context);
+							viewHolderFinal.vhQuantity.setText(String.valueOf(orderline.getQuantity()));
+						}
+                   }
+               });
+			
+			holder.vhMinus.setOnClickListener(
+               new OnClickListener()
+               {
+                   public void onClick(View view)
+                   {
+               		OrderLine orderline = basket.findItem(item);
+	               		
+               		if (orderline.getQuantity() > 0)
+               		{
+	               		orderline.setQuantity(orderline.getQuantity() - 1);
+	               		viewHolderFinal.vhQuantity.setText(String.valueOf(orderline.getQuantity()));
+	               		Display.makeToast(currency.format(basket.getRemainingBudget()), context);
+               		}	               		
+                  }
+               }
+			);
+		        
+	        return vi;
+		}
+		
+	    public Filter getFilter() {
+	    	//Display.makeToast(String.valueOf(filteredData.size()), context);
+	        return shoppingListFilter;
+	    }
+		
+		private class ItemFilter extends Filter {
+	        @SuppressLint("DefaultLocale")
+			@Override
+	        protected FilterResults performFiltering(CharSequence constraint) {
+
+	            String needle = constraint.toString().toLowerCase();
+
+	            FilterResults results = new FilterResults();
+
+	            int count = originalData.size();
+	            final ArrayList<Item> matchList = new ArrayList<Item>();
+
+	            String haystack;
+
+	            for (int i = 0; i < count; i++) {
+	            	Item item = originalData.get(i);
+	                haystack = item.getName();
+	                if (haystack.toLowerCase().contains(needle)) {
+	                    matchList.add(item);
+	                }
+	            }
+
+	            results.values = matchList;
+	            results.count = matchList.size();
+
+	            return results;
+	        }
+
+	        @SuppressWarnings("unchecked")
+	        @Override
+	        protected void publishResults(CharSequence constraint, FilterResults results) {
+	            filteredData = (ArrayList<Item>) results.values;
+	            notifyDataSetChanged();
+	        }
+
+	}
+}
+		
+	@Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContenvhiew(R.layout.shopping_list_view); 
+        
+        Button checkout = (Button)findViewById(R.id.checkout);
+        checkout.setOnClickListener(
+                new OnClickListener()
+                {
+                    public void onClick(View view)
+                    {
+                		checkout();
+                    }
+                });
+        
+        
+        Store store = Store.getInstance();
+        currency = NumberFormat.getCurrencyInstance(Locale.ITALY);
+        adapter = new ShoppingListAdapter(this,R.layout.row,R.id.item,R.id.price, R.id.description,R.id.plus,R.id.minus,R.id.quantity,store.getItemsAsArray());
+        setListAdapter(adapter);
+        
+        EditText search = (EditText) findViewById(R.id.searchField);
+        
+        search.addTextChangedListener(new TextWatcher(){
+			public void afterTextChanged(Editable s) {}
+			public void beforeTextChanged(CharSequence s, int start, int count, int after){}
+			public void onTextChanged(CharSequence s, int start, int before, int count)
+            {
+            	 adapter.getFilter().filter(s);
+            }
+        });
+    }
+    
+    
+    private void checkout()
+    {
+		Intent intent = new Intent(ShoppingLisvhiew.this,CheckoutView.class);
+		startActivity(intent);
+    }
+}

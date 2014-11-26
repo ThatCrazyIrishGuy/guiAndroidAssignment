@@ -17,7 +17,6 @@
 <fullyQualifiedTypeName name="android.widget.TableLayout"/>
 <fullyQualifiedTypeName name="android.widget.TableRow"/>
 <fullyQualifiedTypeName name="ie.dit.britton.darren.shoppinglist.OrderLine"/>
-<fullyQualifiedTypeName name="android.widget.TextView"/>
 <fullyQualifiedTypeName name="java.lang.String"/>
 <fullyQualifiedTypeName name="android.os.SystemClock"/>
 <fullyQualifiedTypeName name="android.os.AsyncTask"/>
@@ -35,7 +34,6 @@
 <fullyQualifiedTypeName name="android.os.Environment"/>
 <fullyQualifiedTypeName name="android.content.Context"/>
 <fullyQualifiedTypeName name="java.io.OutputStreamWriter"/>
-<fullyQualifiedTypeName name="java.util.List"/>
 <fullyQualifiedTypeName name="ie.dit.britton.darren.shoppinglist.R.id"/>
 <fullyQualifiedTypeName name="android.app.AlertDialog"/>
 <fullyQualifiedTypeName name="android.content.DialogInterface"/>
@@ -44,6 +42,9 @@
 <fullyQualifiedTypeName name="android.text.TextWatcher"/>
 <fullyQualifiedTypeName name="android.widget.Filterable"/>
 <fullyQualifiedTypeName name="android.view.LayoutInflater.Filter"/>
-<fullyQualifiedTypeName name="java.util.ArrayList"/>
 <fullyQualifiedTypeName name="android.widget.Filter"/>
+<fullyQualifiedTypeName name="android.widget.TextView"/>
+<fullyQualifiedTypeName name="android.graphics.Color"/>
+<fullyQualifiedTypeName name="java.util.List"/>
+<fullyQualifiedTypeName name="java.util.ArrayList"/>
 </qualifiedTypeNameHistroy>

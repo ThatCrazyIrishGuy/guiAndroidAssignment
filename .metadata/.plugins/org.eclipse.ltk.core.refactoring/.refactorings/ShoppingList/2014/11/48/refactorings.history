@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename method &apos;ie.dit.britton.darren.shoppinglist.Display.MakeToast(...)&apos; to &apos;makeToast&apos;&#x0D;&#x0A;- Original project: &apos;ShoppingList&apos;&#x0D;&#x0A;- Original element: &apos;ie.dit.britton.darren.shoppinglist.Display.MakeToast(...)&apos;&#x0D;&#x0A;- Renamed element: &apos;ie.dit.britton.darren.shoppinglist.Display.makeToast(...)&apos;&#x0D;&#x0A;- Update references to refactored element" delegate="false" deprecate="false" description="Rename method &apos;MakeToast&apos;" flags="589830" id="org.eclipse.jdt.ui.rename.method" input="/src&lt;ie.dit.britton.darren.shoppinglist{Display.java[Display~MakeToast~QString;~QContext;" name="makeToast" references="true" stamp="1416945207528" version="1.0"/>
+</session>
