@@ -1,0 +1,25 @@
+package ie.dit.britton.darren.shoppinglist;
+
+import android.content.Context;
+import android.widget.Toast;
+
+/**
+ * this class encapsulates the make toast function to prevent the need to
+ * replicated in every intent class
+ */
+public class Display
+{
+
+	private static Toast toast;
+
+	public static void makeToast(String message, Context context)
+	{
+		if (toast != null)
+		{
+			toast.cancel();
+		}
+
+		toast = Toast.makeText(context, message, Toast.LENGTH_SHORT);
+		toast.show();
+	}
+}

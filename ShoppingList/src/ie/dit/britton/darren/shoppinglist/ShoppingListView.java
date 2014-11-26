@@ -39,7 +39,7 @@ public class ShoppingListView extends ListActivity
 	/**
 	 * the viewholder pattern allows us to store the row elements for later use
 	 * preventing unnecessary and expensive geviewById calls. the following
-	 * example code was used to assist my implementation:
+	 * example code was used to assist in my implementation:
 	 * http://www.javacodegeeks
 	 * .com/2013/09/android-viewholder-pattern-example.html
 	 */
@@ -186,7 +186,7 @@ public class ShoppingListView extends ListActivity
 
 					if (basket.getRemainingBudget() <= orderline.getPrice())
 					{
-						Display.makeToast(
+						Toaster.makeToast(
 								"Cannot Excede Budget \n"
 										+ currency.format(basket
 												.getRemainingBudget())
@@ -205,7 +205,7 @@ public class ShoppingListView extends ListActivity
 							orderline.setQuantity(orderline.getQuantity() + 1);
 						}
 
-						Display.makeToast(
+						Toaster.makeToast(
 								currency.format(basket.getRemainingBudget()),
 								context);
 						viewHolderFinal.vhQuantity.setText(String
@@ -224,7 +224,7 @@ public class ShoppingListView extends ListActivity
 						orderline.setQuantity(orderline.getQuantity() - 1);
 						viewHolderFinal.vhQuantity.setText(String
 								.valueOf(orderline.getQuantity()));
-						Display.makeToast(
+						Toaster.makeToast(
 								currency.format(basket.getRemainingBudget()),
 								context);
 					}
@@ -236,7 +236,7 @@ public class ShoppingListView extends ListActivity
 
 		public Filter getFilter()
 		{
-			// Display.makeToast(String.valueOf(filteredData.size()), context);
+			// Toaster.makeToast(String.valueOf(filteredData.size()), context);
 			return shoppingListFilter;
 		}
 

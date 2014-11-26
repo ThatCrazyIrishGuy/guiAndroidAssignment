@@ -123,7 +123,7 @@ public class CheckoutView extends ActionBarActivity
 						} catch (Exception e)
 						{
 							e.printStackTrace();
-							Display.makeToast("File not Found",
+							Toaster.makeToast("File not Found",
 									getBaseContext());
 							return null;
 						}
@@ -145,7 +145,7 @@ public class CheckoutView extends ActionBarActivity
 				}
 
 				new SendEmail().execute();
-				Display.makeToast("Transaction Completed", getBaseContext());
+				Toaster.makeToast("Transaction Completed", getBaseContext());
 
 			}
 		});

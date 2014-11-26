@@ -47,11 +47,11 @@ public class UserDetailForm extends ActionBarActivity
 				public void run()
 				{
 					Store.getInstance()
-							.populate(
-									getResources()
-											.getStringArray(R.array.items),
-									getResources().getStringArray(
-											R.array.descriptions));
+						.populate(
+							getResources()
+									.getStringArray(R.array.items),
+							getResources().getStringArray(
+									R.array.descriptions));
 				}
 			}.run();
 		}
@@ -87,11 +87,6 @@ public class UserDetailForm extends ActionBarActivity
 				if (nextIntent)
 				{
 					loadShoppingList();
-				} else
-				{
-					Display.makeToast(
-							"Please complete all fields / Enter valid values",
-							getBaseContext());
 				}
 			}
 		});
@@ -110,7 +105,7 @@ public class UserDetailForm extends ActionBarActivity
 		switch (item.getItemId())
 		{
 		case R.id.action_load_demo_values:
-			Display.makeToast("this feature was deemed less important",
+			Toaster.makeToast("this feature was deemed less important",
 					getBaseContext());
 			return true;
 		case R.id.action_settings:
@@ -131,7 +126,6 @@ public class UserDetailForm extends ActionBarActivity
 		 */
 		String nameRegex = "^[A-z ,.'-]+$";
 		String ageRegex = "^1[0-9][0-9]$|^[1-9][0-9]$|^[0-9]$";
-		String moneyRegex = "[0-9]+";
 		String emailRegex = "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$";
 
 		if (name.getText().length() != 0
@@ -140,6 +134,9 @@ public class UserDetailForm extends ActionBarActivity
 			user.setName(name.getText().toString());
 		} else
 		{
+			Toaster.makeToast(
+					"The name field is empty or contains invalid characters",
+					getBaseContext());
 			return false;
 		}
 
@@ -151,6 +148,9 @@ public class UserDetailForm extends ActionBarActivity
 			user.setGender(selectedGender.getText().toString());
 		} else
 		{
+			Toaster.makeToast(
+					"Please select a gender before continuing",
+					getBaseContext());
 			return false;
 		}
 
@@ -162,15 +162,20 @@ public class UserDetailForm extends ActionBarActivity
 			user.setAge(Short.parseShort(age.getText().toString()));
 		} else
 		{
+			Toaster.makeToast(
+					"The age field is empty or age entered is out of range",
+					getBaseContext());
 			return false;
 		}
 
-		if (money.getText().length() != 0
-				&& Pattern.matches(moneyRegex, money.getText().toString()))
+		if (money.getText().length() != 0)
 		{
 			user.setMoney(Double.parseDouble(money.getText().toString()));
 		} else
 		{
+			Toaster.makeToast(
+					"The budget field is empty",
+					getBaseContext());
 			return false;
 		}
 
@@ -180,6 +185,9 @@ public class UserDetailForm extends ActionBarActivity
 			user.setEmail(email.getText().toString());
 		} else
 		{
+			Toaster.makeToast(
+					"The email field is empty or is not a valid email address",
+					getBaseContext());
 			return false;
 		}
 
