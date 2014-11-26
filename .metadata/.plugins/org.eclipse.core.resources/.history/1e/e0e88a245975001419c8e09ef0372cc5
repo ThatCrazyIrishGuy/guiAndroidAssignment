@@ -64,7 +64,7 @@ public class CheckoutView extends ActionBarActivity
 
 		final Calendar calendar = Calendar.getInstance();
 		final SimpleDateFormat dateFormat = new SimpleDateFormat(
-				"dd-MM-yyyy-HH-mm-ss", Locale.UK);
+				"dd-MM-yyyy-HH:mm:ss", Locale.UK);
 
 		checkout = (Button) findViewById(R.id.checkout);
 		checkout.setOnClickListener(new OnClickListener() {
@@ -85,7 +85,7 @@ public class CheckoutView extends ActionBarActivity
 
 						OutputStreamWriter outputStream;
 						String currTime = dateFormat.format(calendar.getTime());
-						String fileName = "shopping-list-for-" + currTime
+						String fileName = "shopping-list" //+ currTime
 								+ ".html";
 						/**
 						 * writes the generated html to a file in the
